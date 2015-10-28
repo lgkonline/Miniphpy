@@ -3,8 +3,8 @@
 header("Content-type: text/json");
 
 if ($action_get == "minify") {
-	if (filter_input(INPUT_GET, "inputGroupID")) {
-		$inputGroupID = filter_input(INPUT_GET, "inputGroupID");
+	if (filter_input(INPUT_POST, "inputGroupID")) {
+		$inputGroupID = filter_input(INPUT_POST, "inputGroupID");
 	}
 	else {
 		$inputGroupID = 1;
@@ -29,7 +29,7 @@ if ($action_get == "minify") {
 	fwrite($output_file, $output);
 	fclose($output_file);
 	
-	echo "Okay";
+	echo json_encode(array("response" => "Okay"));
 }
 
 if ($action_get == "config") {

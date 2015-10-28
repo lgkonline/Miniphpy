@@ -12,9 +12,15 @@
 		<section class="tpl-area">
 			<article id="tpl-input-group">
 				<div class="panel panel-default">
+					<button type="button" class="tpl-input-group-minify btn btn-primary pull-right" data-id="">
+						<span class="tpl-input-group-minify-icon glyphicon glyphicon-refresh"></span>
+						Minify
+					</button>
+					
+					<div class="tpl-input-group-type pull-left"></div>	
+						
 					<div class="panel-heading">
 						<h4 class="panel-title">
-							<span class="tpl-input-group-type"></span>
 							<span class="tpl-input-group-output-file"></span>
 						</h4>
 					</div>
@@ -26,7 +32,7 @@
 			</article>
 			
 			<article id="tpl-input">
-				<div class="input-group-item">
+				<div class="list-group-item">
 					<span class="tpl-input-file"></span> |
 					<span class="tpl-input-position"></span>
 				</div>
@@ -35,7 +41,7 @@
 		
 		<main>
 			<div class="container">
-				<a href="index.php?action=minify" class="btn btn-default">Minify</a>
+				<h1 class="page-header">Miniphpy</h1>
 				
 				<div id="input-groups"></div>
 			</div>

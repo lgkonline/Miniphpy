@@ -1,7 +1,42 @@
 @import "../_bootstrap-less/bootstrap";
 @import "_bootswatch";
 
+*:focus {
+    outline: none !important;
+}
+
+body  {
+    padding-top: 70px;
+    cursor: default;
+}
+
 .tpl-area,
 .tpl-area * {
     display: none !important;
+}
+
+.spin {
+    .animation(spin 2s infinite linear);
+}
+
+@-webkit-keyframes spin {
+    from { 
+        -webkit-transform: rotate(0deg); 
+    }
+    to { 
+        -webkit-transform: rotate(360deg); 
+    }
+}
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
+
+.tpl-input-group-type {
+    text-transform: uppercase;
+    .button-size(@padding-base-vertical; @padding-base-horizontal; @font-size-base; @line-height-base; @btn-border-radius-base);
 }
