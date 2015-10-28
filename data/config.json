@@ -13,6 +13,16 @@
 					"position": 2
 				}
 			}
+		},
+		"2": {
+			"groupType": "css",
+			"outputFile": "C:\\xampp\\htdocs\\go\\miniphpy\\output\\stylesheet.min.css",
+			"input": {
+				"1": {
+					"file": "C:\\xampp\\htdocs\\go\\miniphpy\\input\\style.css",
+					"position": 1
+				}
+			}
 		}
 	}
 }

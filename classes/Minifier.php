@@ -5,10 +5,10 @@ class Minifier {
 	private $urlCSS = "http://cssminifier.com/raw";
 	
 	public function minify($format, $content) {
-		if ($format = "js") {
+		if ($format == "js") {
 			return $this->minifyJS($content);
 		}
-		if ($format = "css") {
+		if ($format == "css") {
 			return $this->minifyCSS($content);
 		}
 	}

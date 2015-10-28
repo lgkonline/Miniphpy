@@ -10,13 +10,6 @@ if ($action_get == "minify") {
 		$inputGroupID = 1;
 	}
 	
-	if (filter_input(INPUT_GET, "format")) {
-		$format = filter_input(INPUT_GET, "format");
-	}
-	else {
-		$format = "js";
-	}
-	
 	require "classes/Minifier.php";
 	
 	$config = UserConfig::getConfig();
@@ -30,7 +23,7 @@ if ($action_get == "minify") {
 		$content .= $file;
 	}
 	
-	$output = $minifier->minify($format, $content);
+	$output = $minifier->minify($inputGroup->groupType, $content);
 	
 	$output_file = fopen($inputGroup->outputFile, "w") or die("Unable to open '$output_file1'.");
 	fwrite($output_file, $output);
