@@ -1,0 +1,18 @@
+{
+	"inputGroups": {
+		"1": {
+			"groupType": "js",
+			"outputFile": "C:\\xampp\\htdocs\\go\\miniphpy\\output\\myugly.js",
+			"input": {
+				"1": {
+					"file": "C:\\xampp\\htdocs\\go\\miniphpy\\input\\main.js",
+					"position": 1
+				},
+				"2": {
+					"file": "C:\\xampp\\htdocs\\go\\miniphpy\\input\\search.js",
+					"position": 2
+				}
+			}
+		}
+	}
+}
