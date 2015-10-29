@@ -9,9 +9,4 @@ if ($action_get || $action_post) {
 	include "include/action.php";
 }
 
-
-
-// print_r(UserConfig::getConfig());
-
 include "public/views/index.html";
-?>

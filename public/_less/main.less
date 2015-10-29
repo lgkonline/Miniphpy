@@ -39,4 +39,30 @@ body  {
 .tpl-input-group-type {
     text-transform: uppercase;
     .button-size(@padding-base-vertical; @padding-base-horizontal; @font-size-base; @line-height-base; @btn-border-radius-base);
+    width: 100%;
+}
+
+.group-type-js {
+    background-color: #E5A229;
+}
+
+.group-type-css {
+    background-color: #0C72BA;
+}
+
+.miniphpy-input-group-header {
+    background-color: darken(@btn-default-bg, 3%);
+    
+    .tpl-input-group-output-file {
+        background-color: transparent;
+        color: #fff;
+    }
+    
+    .tpl-input-group-output-file:hover {
+        background-color: fade(#fff, 10%);
+    }
+    
+    .tpl-input-group-output-file:focus {
+        background-color: fade(#fff, 15%);
+    }
 }

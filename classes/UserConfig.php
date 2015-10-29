@@ -3,7 +3,7 @@
 class UserConfig {
 	private static $config;
 	private static $configJson;
-	private static $configFile = "data/config.json";
+	public static $configFile = "data/config.json";
 	
 	public static function getConfig() {
 		if (!isset(self::$config)) {

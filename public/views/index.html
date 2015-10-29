@@ -11,30 +11,56 @@
 	<body>
 		<section class="tpl-area">
 			<article id="tpl-input-group">
-				<div class="panel panel-default">
-					<button type="button" class="tpl-input-group-minify btn btn-primary pull-right" data-id="">
-						<span class="tpl-input-group-minify-icon glyphicon glyphicon-refresh"></span>
-						Minify
-					</button>
-					
-					<div class="tpl-input-group-type pull-left"></div>	
-						
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<span class="tpl-input-group-output-file"></span>
-						</h4>
+				<div data-input-group-id="" class="input-group-id panel panel-default">
+					<div class="miniphpy-input-group-header">
+						<div class="row">
+							<div class="col-md-1">
+								<div class="tpl-input-group-type"></div>
+							</div>
+							
+							<div class="col-md-7">
+								<input type="text" class="tpl-input-group-output-file form-control">
+							</div>
+							
+							<div class="col-md-4">
+								<div class="btn-group pull-right">
+									<button type="button" class="tpl-input-group-remove btn btn-danger">
+										<span class="glyphicon glyphicon-minus-sign"></span>
+										Remove
+									</button>
+									
+									<button type="button" class="tpl-input-group-add btn btn-success">
+										<span class="glyphicon glyphicon-plus-sign"></span>
+										Add
+									</button>
+										
+									<button type="button" class="tpl-input-group-minify btn btn-primary">
+										<span class="tpl-input-group-minify-icon glyphicon glyphicon-refresh"></span>
+										Minify
+									</button>						
+								</div>								
+							</div>
+						</div>
 					</div>
 					
 					<div class="tpl-input-group-inputs list-group">
-						
 					</div>
 				</div>
 			</article>
 			
 			<article id="tpl-input">
-				<div class="list-group-item">
-					<span class="tpl-input-file"></span> |
-					<span class="tpl-input-position"></span>
+				<div data-id="" class="input-id list-group-item">
+					<div class="input-group">
+						<input type="text" class="tpl-input-file form-control" placeholder="Enter a path or an URL">
+						
+						<span class="input-group-btn">
+							<button type="button" class="tpl-input-remove btn btn-danger">
+								<span class="glyphicon glyphicon-minus-sign"></span>
+							</button>
+						</span>
+						
+						<span class="tpl-input-position input-group-addon"></span>
+					</div>
 				</div>
 			</article>
 		</section>
@@ -43,11 +69,17 @@
 			<div class="container">
 				<h1 class="page-header">Miniphpy</h1>
 				
+				<button type="button" class="add-input-group btn btn-success" style="margin-bottom: 20px;">
+					<span class="glyphicon glyphicon-plus-sign"></span>
+					Add a new group
+				</button>
+				
 				<div id="input-groups"></div>
 			</div>
 		</main>
 		
 		<script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
 		<script src="public/js/main.js"></script>
+		<script src="public/lib/jquery.toaster/jquery.toaster.js"></script>
 	</body>
 </html>
