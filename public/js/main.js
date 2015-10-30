@@ -123,7 +123,7 @@ function receiveData() {
 				$("#input-groups").html($(noBundlesDom).html());
 			}
 			
-			$('.dropdown-toggle').dropdown();
+			$(".dropdown-toggle").dropdown();
 			
 			// Btn Minify
 			$(".tpl-input-group-minify").click(function() {
