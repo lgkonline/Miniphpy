@@ -33,3 +33,6 @@ But if you are impatient, you should use the local way.
 * CssMin (http://code.google.com/p/cssmin/)
 * JavaScript Minifier API (http://javascript-minifier.com/)
 * CSS Minifier API (http://cssminifier.com/)
+
+* Bootstrap v3.x.x (http://getbootstrap.com/)
+* Bootswatch Theme: Superhero (https://bootswatch.com/superhero/)
