@@ -16,6 +16,17 @@ But I couldn' find a good way to combine JS files.
 And that's why I started Miniphpy.
 
 
+## Remote and local compression
+
+In Miniphpy you have two optional ways to compress your code: Remote and local compression.
+
+For the remote compression we use the APIs of http://javascript-minifier.com/ and http://cssminifier.com/.
+The vantage is, your output file will be much smaller. The disadvantage: the process will take longer.
+
+So if any bit counts you should choose the remote compression. 
+But if you are impatient, you should use the local way.
+
+
 ## Used sources
 
 * JShrink (https://github.com/tedious/JShrink)
