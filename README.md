@@ -14,3 +14,11 @@ There are already tools like Koala which let you compile LESS/Sass and also mini
 But I couldn' find a good way to combine JS files.
 
 And that's why I started Miniphpy.
+
+
+## Used sources
+
+* JShrink (https://github.com/tedious/JShrink)
+* CssMin (http://code.google.com/p/cssmin/)
+* JavaScript Minifier API (http://javascript-minifier.com/)
+* CSS Minifier API (http://cssminifier.com/)

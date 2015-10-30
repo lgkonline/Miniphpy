@@ -37,7 +37,7 @@ if ($action_get == "minify") {
 	}
 	
 	if ($status_code == 200) {
-		$output = $minifier->minify($inputGroup->groupType, $content);
+		$output = $minifier->minify($inputGroup->groupType, $content, $inputGroup->compressionOption);
 		
 		$output_file = fopen($inputGroup->outputFile, "w") or die("Unable to open '$inputGroup->outputFile'.");
 		fwrite($output_file, $output);

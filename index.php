@@ -1,5 +1,7 @@
 <?php
 
+define("DEBUG_MODE", false);
+
 require "classes/UserConfig.php";
 
 $action_get = filter_input(INPUT_GET, "action");

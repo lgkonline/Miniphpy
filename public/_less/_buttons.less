@@ -1,0 +1,32 @@
+.btn.btn-outline {
+	background-color: transparent;
+}
+
+.btn-outline.btn-danger {
+	border-color: @brand-danger;
+	color: @brand-danger;
+}
+.btn-outline.btn-success {
+	border-color: @brand-success;
+	color: @brand-success;
+}
+.btn-outline.btn-primary {
+	border-color: @brand-primary;
+	color: @brand-primary;
+}
+
+.btn-default-reverse {
+	.button-variant-reverse(@btn-default-color; darken(@btn-default-bg, 3%); darken(@btn-default-border, 3%));
+}
+
+.btn-primary-reverse {
+	.button-variant-reverse(@btn-primary-color; darken(@btn-primary-bg, 3%); darken(@btn-primary-border, 3%));
+}
+
+.btn-success-reverse {
+	.button-variant-reverse(@btn-success-color; darken(@btn-success-bg, 3%); darken(@btn-success-border, 3%));
+}
+
+.btn-danger-reverse {
+	.button-variant-reverse(@btn-danger-color; darken(@btn-danger-bg, 3%); darken(@btn-danger-border, 3%));
+}

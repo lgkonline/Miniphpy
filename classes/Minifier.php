@@ -4,21 +4,25 @@ class Minifier {
 	private $urlJS = "http://javascript-minifier.com/raw";
 	private $urlCSS = "http://cssminifier.com/raw";
 	
-	public function minify($format, $content) {
+	public function minify($format, $content, $compression_option = "remote") {
 		if ($format == "js") {
-			return $this->minifyJS($content);
+			if ($compression_option == "remote") {
+				return $this->getMinified($this->urlJS, $content); // remote compression
+			}
+			else {
+				require "vendor/JShrink/Minifier.php";
+				return \JShrink\Minifier::minify($content); // local compression
+			}
 		}
 		if ($format == "css") {
-			return $this->minifyCSS($content);
+			if ($compression_option == "remote") {
+				return $this->getMinified($this->urlCSS, $content);	 // remote compression
+			}
+			else {
+				require "vendor/cssmin/cssmin-v3.0.1-minified.php";
+				return CssMin::minify($content);	// local compression
+			}
 		}
-	}
-	
-	public function minifyJS($js) {
-		return $this->getMinified($this->urlJS, $js);		
-	}
-	
-	public function minifyCSS($css) {
-		return $this->getMinified($this->urlCSS, $css);
 	}
 	
 	private function getMinified($url, $content) {

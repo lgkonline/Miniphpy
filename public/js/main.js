@@ -1,4 +1,6 @@
 var config = {};
+var availableGroupTypes = ["js", "css"];
+var availableCompressionOptions = ["remote", "local"];
 
 function saveChanges() {
 	$.ajax({
@@ -48,13 +50,19 @@ function receiveData() {
 			
 			$.each(config.inputGroups, function(currInputGroupKey, currInputGroup) {
 				var inputGroupDom = $("#tpl-input-group").clone();
+				var dropdownID = "dropdown-" + currInputGroupKey;
 				
 				$(inputGroupDom).find(".input-group-id").attr("data-id", currInputGroupKey);
 				
-				$(inputGroupDom).find(".tpl-input-group-type").text(currInputGroup.groupType);
-				$(inputGroupDom).find(".tpl-input-group-type").addClass("group-type-" + currInputGroup.groupType);
-				$(inputGroupDom).find(".tpl-input-group-output-file").attr("value", currInputGroup.outputFile);
+				$(inputGroupDom).find(".tpl-input-group-type-dropdown-toggle").addClass("group-type-" + currInputGroup.groupType);
+				$(inputGroupDom).find(".tpl-input-group-type-dropdown-toggle").attr("id", dropdownID);
+				$(inputGroupDom).find(".tpl-input-group-type-dropdown-menu").attr("aria-labelledby", dropdownID);
 				
+				$(inputGroupDom).find(".tpl-input-group-type").text(currInputGroup.groupType);
+				$(inputGroupDom).find(".tpl-input-group-output-file").attr("value", currInputGroup.outputFile);
+				$(inputGroupDom).find(".tpl-input-group-title").attr("value", currInputGroup.title);
+				
+				// Place inputs
 				$.each(currInputGroup.input, function(currInputKey, currInput) {
 					var inputDom = $("#tpl-input").clone();
 					
@@ -66,38 +74,63 @@ function receiveData() {
 					$(inputGroupDom).find(".tpl-input-group-inputs").append($(inputDom).html());
 				});
 				
+				// Remove current group type as a option from dropdown
+				$(inputGroupDom).find(".tpl-input-group-type-dropdown-option").each(function() {
+					if ($(this).attr("data-value") == currInputGroup.groupType) {
+						$(this).remove();
+					}
+				});
+				
+				// Mark active compression option
+				$(inputGroupDom).find(".tpl-input-group-compression-option").each(function() {
+					if ($(this).attr("data-value") == currInputGroup.compressionOption) {
+						$(this).addClass("active");
+					}
+				});
+				
 				$("#input-groups").append($(inputGroupDom).html());
 			});
+			
+			$('.dropdown-toggle').dropdown();
 			
 			// Btn Minify
 			$(".tpl-input-group-minify").click(function() {
 				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
 				var thisBtn = this;
 				
-				$(this).find(".tpl-input-group-minify-icon").addClass("spin");
-				
-				$.ajax({
-					url: "index.php?action=minify",
-					data: {"inputGroupID": inputGroupID},
-					type: "POST",
-					dataType: "json",
-					success: function(response) {
-						console.log(response);
-						
-						toggleMinifyBtnStatus(thisBtn, "btn-success", "glyphicon-ok");
-					},
-					error: function(response) {
-						console.log(response);
-						
-						$.toaster({ 
-							priority : 'danger',
-							title : 'Error', 
-							message : response.responseJSON.response
-						});
-						
-						toggleMinifyBtnStatus(thisBtn, "btn-danger", "glyphicon-remove");
-					}
-				});
+				if (config.inputGroups[inputGroupID].outputFile != "") {
+					$(this).find(".tpl-input-group-minify-icon").addClass("spin");
+					
+					$.ajax({
+						url: "index.php?action=minify",
+						data: {"inputGroupID": inputGroupID},
+						type: "POST",
+						dataType: "json",
+						success: function(response) {
+							console.log(response);
+							
+							toggleMinifyBtnStatus(thisBtn, "btn-success", "glyphicon-ok");
+						},
+						error: function(response) {
+							console.log(response);
+							
+							$.toaster({ 
+								priority : 'danger',
+								title : 'Error', 
+								message : response.responseJSON.response
+							});
+							
+							toggleMinifyBtnStatus(thisBtn, "btn-danger", "glyphicon-remove");
+						}
+					});
+				}
+				else {
+					$.toaster({ 
+						priority : 'warning',
+						title : 'Warning', 
+						message : 'Make sure to set the output file.'
+					});
+				}
 			});
 			
 			// Btn Add input
@@ -137,9 +170,17 @@ function receiveData() {
 			// Changed group
 			$(".tpl-input-group-output-file").blur(function() {
 				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
-				var outputFile = $(this).val();
 				
-				config.inputGroups[inputGroupID].outputFile = outputFile;
+				config.inputGroups[inputGroupID].outputFile = $(this).val();
+				
+				saveChanges();
+			});
+			
+			// Changed bundle title
+			$(".tpl-input-group-title").blur(function() {
+				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
+				
+				config.inputGroups[inputGroupID].title = $(this).val();
 				
 				saveChanges();
 			});
@@ -153,16 +194,19 @@ function receiveData() {
 				saveChanges();
 			});
 			
-			// Add input group
-			$(".add-input-group").click(function() {
-				var inputGroupID = makeInputGroupID();
+			// Change input group type
+			$(".tpl-input-group-type-dropdown-option").click(function() {
+				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
 				
-				config.inputGroups[inputGroupID] = {
-					groupType: "js",
-					input: {},
-					outputFile: "output/\minified.js"
-				};
+				config.inputGroups[inputGroupID].groupType = $(this).attr("data-value");
 				
+				saveChanges();
+			});
+			
+			// Change compression option
+			$(".tpl-input-group-compression-option:not(.active)").click(function() {
+				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
+				config.inputGroups[inputGroupID].compressionOption = $(this).attr("data-value");
 				saveChanges();
 			});
 		}
@@ -184,5 +228,45 @@ function toggleMinifyBtnStatus(btn, btnClass, iconClass) {
 }
 
 $(document).ready(function() {
+	// Load available group types
+	$("#tpl-input-group .tpl-input-group-type-dropdown-menu").empty();
+	$.each(availableGroupTypes, function(currAvailableGroupTypeKey, currAvailableGroupType) {
+		$("#tpl-input-group .tpl-input-group-type-dropdown-menu").append(
+			'<li class="tpl-input-group-type-dropdown-option" data-value="' + currAvailableGroupType + '">' +
+				'<a href="javascript:void(0);">' +
+					currAvailableGroupType.toUpperCase() +
+				'</a>' +
+			'</li>'
+		);
+	});
+	
+	// Load available compression options
+	$("#tpl-input-group .tpl-input-group-compression-option-dropdown-menu").empty();
+	$.each(availableCompressionOptions, function(currAvailableCompressionOptionKey, currAvailableCompressionOption) {
+		$("#tpl-input-group .tpl-input-group-compression-option-dropdown-menu").append(
+			'<li class="tpl-input-group-compression-option" data-value="' + currAvailableCompressionOption + '">' +
+				'<a href="javascript:void(0);">' +
+					currAvailableCompressionOption +
+				'</a>' +
+			'</li>'
+		);
+	});
+	
 	receiveData();
+			
+	// Add input group (bundle)
+	$(".add-input-group").click(function() {
+		var inputGroupID = makeInputGroupID();
+		
+		config.inputGroups[inputGroupID] = {
+			groupType: "js",
+			input: {},
+			outputFile: "",
+			title: "",
+			autoRefresh: 0,
+			compressionOption: "remote"
+		};
+		
+		saveChanges();
+	});
 });
