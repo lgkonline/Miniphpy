@@ -1,4 +1,4 @@
-# MINIPHPY
+![MINIPHPY](https://raw.githubusercontent.com/lgkonline/Miniphpy/master/public/images/logo.png)
 
 ## Okay, what is Miniphpy?
 
@@ -21,9 +21,9 @@ And that's why I started Miniphpy.
 In Miniphpy you have two optional ways to compress your code: Remote and local compression.
 
 For the remote compression we use the APIs of http://javascript-minifier.com/ and http://cssminifier.com/.
-The vantage is, your output file will be much smaller. The disadvantage: the process will take longer.
+The good thing is, your output file will be much smaller. The disadvantage: the process will take longer.
 
-So if any bit counts you should choose the remote compression. 
+So if every single bit counts, you should choose the remote compression. 
 But if you are impatient, you should use the local way.
 
 
