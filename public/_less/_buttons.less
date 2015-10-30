@@ -2,6 +2,11 @@
 	background-color: transparent;
 }
 
+.btn-outline.btn-default,
+.btn-outline.btn-default-reverse  {
+	border-color: lighten(@btn-default-bg, 40%);
+	color: lighten(@btn-default-bg, 40%);
+}
 .btn-outline.btn-danger {
 	border-color: @brand-danger;
 	color: @brand-danger;
@@ -10,7 +15,8 @@
 	border-color: @brand-success;
 	color: @brand-success;
 }
-.btn-outline.btn-primary {
+.btn-outline.btn-primary,
+.btn-outline.btn-primary-reverse {
 	border-color: @brand-primary;
 	color: @brand-primary;
 }
@@ -29,4 +35,8 @@
 
 .btn-danger-reverse {
 	.button-variant-reverse(@btn-danger-color; darken(@btn-danger-bg, 3%); darken(@btn-danger-border, 3%));
+}
+
+.btn.btn-slim {
+	padding: 8px 8px;
 }

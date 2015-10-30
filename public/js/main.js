@@ -1,6 +1,7 @@
 var config = {};
 var availableGroupTypes = ["js", "css"];
 var availableCompressionOptions = ["remote", "local"];
+var timer;
 
 function saveChanges() {
 	$.ajax({
@@ -44,11 +45,14 @@ function receiveData() {
 		dataType: "json",
 		success: function(receivedConfig) {
 			config = receivedConfig;
+			var countInputGroups = 0;
 			console.log(config);
 			
 			$("#input-groups").empty();
 			
 			$.each(config.inputGroups, function(currInputGroupKey, currInputGroup) {
+				countInputGroups++;
+				
 				var inputGroupDom = $("#tpl-input-group").clone();
 				var dropdownID = "dropdown-" + currInputGroupKey;
 				
@@ -62,8 +66,14 @@ function receiveData() {
 				$(inputGroupDom).find(".tpl-input-group-output-file").attr("value", currInputGroup.outputFile);
 				$(inputGroupDom).find(".tpl-input-group-title").attr("value", currInputGroup.title);
 				
+				var countInputs = 0;
+				
+				$(inputGroupDom).find(".tpl-input-group-inputs").empty();
+				
 				// Place inputs
 				$.each(currInputGroup.input, function(currInputKey, currInput) {
+					countInputs++;
+					
 					var inputDom = $("#tpl-input").clone();
 					
 					$(inputDom).find(".input-id").attr("data-id", currInputKey);
@@ -73,6 +83,11 @@ function receiveData() {
 					
 					$(inputGroupDom).find(".tpl-input-group-inputs").append($(inputDom).html());
 				});
+				
+				if (countInputs == 0) {
+					var noInputsDom = $("#tpl-no-inputs").clone();
+					$(inputGroupDom).find(".tpl-input-group-inputs").html($(noInputsDom).html());
+				}
 				
 				// Remove current group type as a option from dropdown
 				$(inputGroupDom).find(".tpl-input-group-type-dropdown-option").each(function() {
@@ -88,49 +103,33 @@ function receiveData() {
 					}
 				});
 				
+				// Mark auto refresh btn
+				if (currInputGroup.autoRefresh == true) {
+					$(inputGroupDom).find(".tpl-input-group-toggle-auto-refresh").addClass("btn-primary-reverse");
+				}
+				else {
+					$(inputGroupDom).find(".tpl-input-group-toggle-auto-refresh").addClass("btn-default-reverse");
+				}
+				
 				$("#input-groups").append($(inputGroupDom).html());
-			});
+				
+				if (currInputGroup.autoRefresh == true) {
+					minify(currInputGroupKey, ".input-group-id[data-id='" + currInputGroupKey + "'] .tpl-input-group-minify", true);
+				}				
+			}); // end of each inputGroup
+			
+			if (countInputGroups == 0) {
+				var noBundlesDom = $("#tpl-no-bundles").clone();
+				$("#input-groups").html($(noBundlesDom).html());
+			}
 			
 			$('.dropdown-toggle').dropdown();
 			
 			// Btn Minify
 			$(".tpl-input-group-minify").click(function() {
 				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
-				var thisBtn = this;
-				
-				if (config.inputGroups[inputGroupID].outputFile != "") {
-					$(this).find(".tpl-input-group-minify-icon").addClass("spin");
-					
-					$.ajax({
-						url: "index.php?action=minify",
-						data: {"inputGroupID": inputGroupID},
-						type: "POST",
-						dataType: "json",
-						success: function(response) {
-							console.log(response);
-							
-							toggleMinifyBtnStatus(thisBtn, "btn-success", "glyphicon-ok");
-						},
-						error: function(response) {
-							console.log(response);
-							
-							$.toaster({ 
-								priority : 'danger',
-								title : 'Error', 
-								message : response.responseJSON.response
-							});
-							
-							toggleMinifyBtnStatus(thisBtn, "btn-danger", "glyphicon-remove");
-						}
-					});
-				}
-				else {
-					$.toaster({ 
-						priority : 'warning',
-						title : 'Warning', 
-						message : 'Make sure to set the output file.'
-					});
-				}
+				var minifyBtn = this;	
+				minify(inputGroupID, minifyBtn);			
 			});
 			
 			// Btn Add input
@@ -209,13 +208,79 @@ function receiveData() {
 				config.inputGroups[inputGroupID].compressionOption = $(this).attr("data-value");
 				saveChanges();
 			});
-		}
-	});
+			
+			// Toggle auto refresh
+			$(".tpl-input-group-toggle-auto-refresh").click(function() {
+				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
+				
+				if (config.inputGroups[inputGroupID].autoRefresh == true) {
+					config.inputGroups[inputGroupID].autoRefresh = false;
+					console.log("clear it");
+					window.clearTimeout(timer);
+				}
+				else {
+					config.inputGroups[inputGroupID].autoRefresh = true;
+				}
+				
+				saveChanges();
+			});
+			
+		} // end of success function
+	}); // end of ajax
+} // end of receiveData()
+			
+function minify(inputGroupID, minifyBtn, autoRefresh) {
+	if (typeof autoRefresh == "undefined" || autoRefresh == null) {
+		autoRefresh = false;
+	}
+	
+	if (config.inputGroups[inputGroupID].outputFile != "") {
+		$(minifyBtn).find(".tpl-input-group-minify-icon").toggleClass("glyphicon-play glyphicon-refresh");
+		$(minifyBtn).find(".tpl-input-group-minify-icon").addClass("spin");
+		
+		$.ajax({
+			url: "index.php?action=minify",
+			data: {"inputGroupID": inputGroupID},
+			type: "POST",
+			dataType: "json",
+			success: function(response) {
+				console.log(response);
+				
+				toggleMinifyBtnStatus(minifyBtn, "btn-success", "glyphicon-ok");
+				
+				if (autoRefresh) {
+					timer = setTimeout(function() {
+						console.log("new interval");
+						minify(inputGroupID, minifyBtn, config.inputGroups[inputGroupID].autoRefresh);
+					}, 4000);
+				}
+			},
+			error: function(response) {
+				console.log(response);
+				
+				$.toaster({ 
+					priority : 'danger',
+					title : 'Error', 
+					message : response.responseJSON.response
+				});
+				
+				toggleMinifyBtnStatus(minifyBtn, "btn-danger", "glyphicon-remove");
+			}
+		});
+	}
+	else {
+		$.toaster({ 
+			priority : 'warning',
+			title : 'Warning', 
+			message : 'Make sure to set the output file.'
+		});
+	}
 }
 
 function toggleMinifyBtnStatus(btn, btnClass, iconClass) {
 	var defaultBtnClass = "btn-primary";
 	var defaultIconClass = "glyphicon-refresh";
+	var loadingIconClass = "glyphicon-play";
 	
 	$(btn).toggleClass(defaultBtnClass + " " + btnClass);
 	$(btn).find(".tpl-input-group-minify-icon").removeClass("spin");
@@ -223,7 +288,7 @@ function toggleMinifyBtnStatus(btn, btnClass, iconClass) {
 	
 	setTimeout(function() {
 		$(btn).toggleClass(defaultBtnClass + " " + btnClass);
-		$(btn).find(".tpl-input-group-minify-icon").toggleClass(defaultIconClass + " " + iconClass);
+		$(btn).find(".tpl-input-group-minify-icon").toggleClass(loadingIconClass + " " + iconClass);
 	}, 3000);
 }
 
@@ -263,10 +328,24 @@ $(document).ready(function() {
 			input: {},
 			outputFile: "",
 			title: "",
-			autoRefresh: 0,
+			autoRefresh: false,
 			compressionOption: "remote"
 		};
 		
 		saveChanges();
 	});
+});
+
+$("#export-config-modal").on("show.bs.modal", function() {
+	$(this).find(".config-modal-code").html(JSON.stringify(config));
+});
+
+$("#export-config-modal, #import-config-modal").on("shown.bs.modal", function() {
+	$(this).find(".config-modal-code").select();
+});
+
+$("#import-config-go").click(function() {
+	config = JSON.parse($("#import-config-code").val());
+	saveChanges();
+	$('#import-config-modal').modal('hide');
 });

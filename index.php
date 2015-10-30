@@ -1,6 +1,6 @@
 <?php
 
-define("DEBUG_MODE", false);
+define("DEBUG_MODE", true);
 
 require "classes/UserConfig.php";
 
@@ -11,4 +11,8 @@ if ($action_get || $action_post) {
 	include "include/action.php";
 }
 
-include "public/views/index.html";
+include "public/views/head.html";
+include "public/views/templates.html";
+include "public/views/content.html";
+include "public/views/modals.html";
+include "public/views/foot.html";

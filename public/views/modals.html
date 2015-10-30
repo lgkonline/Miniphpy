@@ -1,0 +1,43 @@
+<div id="export-config-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Export this config</h4>
+			</div>
+			
+			<div class="modal-body">
+				<textarea class="config-modal-code form-control" spellcheck="false"></textarea>
+				
+				<p>
+					Take this code and import it in another install.
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="import-config-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Import config code</h4>
+			</div>
+			
+			<div class="modal-body">
+				<textarea id="import-config-code" class="config-modal-code form-control" spellcheck="false"></textarea>
+				
+				<p>
+					Take code from another install and paste it in here.
+				</p>
+			</div>
+			
+			<div class="modal-footer">
+				<button id="import-config-go" type="button" class="btn btn-primary">
+					Start import
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
