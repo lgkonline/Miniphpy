@@ -1,13 +1,20 @@
 <header id="header">
 	<div class="container">
 		<a href="public" class="miniphpy-logo">
-			<img src="public/images/logo.svg" alt="Miniphpy">
+			<img src="public/images/logo.svg" alt="Miniphpy" onerror="this.onerror=null; this.src='public/images/logo.png'">
 		</a>
 	</div>
 </header>
 
 <main id="main">
 	<div class="container">
+		<div id="loading" class="sk-folding-cube">
+			<div class="sk-cube1 sk-cube"></div>
+			<div class="sk-cube2 sk-cube"></div>
+			<div class="sk-cube4 sk-cube"></div>
+			<div class="sk-cube3 sk-cube"></div>
+		</div>		
+		
 		<div class="row">
 			<div class="col-lg-2 col-md-3">
 				<button type="button" class="add-input-group btn btn-primary btn-outline">
@@ -42,14 +49,18 @@
 <footer id="footer">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<a href="http://github.com/lgkonline/miniphpy" target="_blank" class="btn btn-default btn-sm btn-outline">
 					<span class="glyphicon glyphicon-globe"></span>
 					Find Miniphpy on GitHub
 				</a>
 			</div>
 			
-			<div class="col-md-6">
+			<div class="col-md-4" style="text-align: center;">
+				<small class="text-muted">Version <?php echo APP_VERSION; ?></small>
+			</div>
+			
+			<div class="col-md-4">
 				<a href="http://lgk.io" target="_blank" class="lgk-logo pull-right">
 					<img src="http://lib.lgkonline.com/logo-fff.png" alt="LGK">
 				</a>

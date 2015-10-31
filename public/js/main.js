@@ -3,7 +3,11 @@ var availableGroupTypes = ["js", "css"];
 var availableCompressionOptions = ["remote", "local"];
 var timer;
 
-function saveChanges() {
+function saveChanges(restart) {
+	if (typeof restart == "undefined" || restart == null) {
+		restart = false;
+	}
+	
 	$.ajax({
 		url: "index.php?action=update-config",
 		type: "POST",
@@ -11,7 +15,12 @@ function saveChanges() {
 		dataType: "json",
 		success: function(response) {
 			console.log(response);
-			receiveData();
+			if (restart) {
+				location.reload();
+			}
+			else {
+				receiveData();
+			}
 		}
 	});
 }
@@ -38,12 +47,24 @@ function makeInputGroupID() {
 	return newInputGroupID;
 }
 
+function startLoading() {
+	$("#loading").show();
+}
+
+function endLoading() {
+	$("#loading").hide();
+}
+
 function receiveData() {
+	startLoading();
+	
 	$.ajax({
 		url: "index.php?action=config",
 		type: "GET",
 		dataType: "json",
 		success: function(receivedConfig) {
+			endLoading();
+			
 			config = receivedConfig;
 			var countInputGroups = 0;
 			console.log(config);
@@ -212,17 +233,19 @@ function receiveData() {
 			// Toggle auto refresh
 			$(".tpl-input-group-toggle-auto-refresh").click(function() {
 				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
+				var restart = false;
 				
 				if (config.inputGroups[inputGroupID].autoRefresh == true) {
 					config.inputGroups[inputGroupID].autoRefresh = false;
 					console.log("clear it");
-					window.clearTimeout(timer);
+					restart = true;
+					// window.clearTimeout(timer);
 				}
 				else {
 					config.inputGroups[inputGroupID].autoRefresh = true;
 				}
 				
-				saveChanges();
+				saveChanges(restart);
 			});
 			
 		} // end of success function
