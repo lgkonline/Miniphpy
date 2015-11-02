@@ -103,6 +103,8 @@ function receiveData() {
 					$(inputDom).find(".tpl-input-position").text(currInput.position);
 					
 					$(inputGroupDom).find(".tpl-input-group-inputs").append($(inputDom).html());
+					
+					$(inputGroupDom).find(".tpl-input-group-inputs-textarea").append(currInput.file + "\n");
 				});
 				
 				if (countInputs == 0) {
@@ -183,6 +185,43 @@ function receiveData() {
 				var file = $(this).val();
 				
 				config.inputGroups[inputGroupID].input[inputID].file = file;
+				
+				saveChanges();
+			});
+			
+			// Toggle textarea for input files
+			$(".tpl-input-group-edit").click(function() {
+				$(this).closest(".input-group-id").find(".tpl-input-group-inputs-textarea ").toggle();
+				$(this).closest(".input-group-id").find(".list-group").toggle();
+				
+				$(this).toggleClass("active");
+				
+				// $(this).closest(".tpl-input-group-inputs-textarea").show();
+				// $(this).closest(".input-groups").toggle();
+			});
+			
+			// Changed input textarea
+			$(".tpl-input-group-inputs-textarea").blur(function() {
+				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
+				
+				var inputFiles = $(this).val().split("\n");
+				var input = {};
+				console.log(inputFiles);
+				
+				var i = 0;
+				
+				$.each(inputFiles, function(currInputFileKey, currInputFile) {
+					if (currInputFile != "") {
+						i++;
+						input[i] = {
+							file: currInputFile,
+							position: i
+						};
+					}
+				});
+				console.log(input);
+				
+				config.inputGroups[inputGroupID].input = input;
 				
 				saveChanges();
 			});

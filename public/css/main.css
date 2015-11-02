@@ -7555,19 +7555,6 @@ fieldset[disabled] .group-type-css.active {
   color: #0c72ba;
   background-color: #ffffff;
 }
-.miniphpy-input-group-header {
-  background-color: #2b2b2b;
-}
-.miniphpy-input-group-header .form-control {
-  background-color: transparent;
-  color: #fff;
-}
-.miniphpy-input-group-header .form-control:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-.miniphpy-input-group-header .form-control:focus {
-  background-color: rgba(255, 255, 255, 0.15);
-}
 .miniphpy-logo {
   width: 300px;
   display: block;
@@ -7645,14 +7632,7 @@ textarea.form-control.config-modal-code {
   color: #999999;
 }
 .no-inputs {
-  text-align: right;
   padding-bottom: 20px;
-}
-.no-inputs .no-inputs-arrow {
-  padding-right: 150px;
-}
-.no-inputs .no-inputs-info {
-  padding-right: 20px;
 }
 .no-bundles .no-bundles-arrow {
   padding-left: 60px;
@@ -7661,4 +7641,31 @@ textarea.form-control.config-modal-code {
   .add-input-group {
     margin-bottom: 10px;
   }
+}
+.miniphpy-input-menu .btn {
+  text-align: left;
+}
+.miniphpy-input-row {
+  overflow: hidden;
+}
+.miniphpy-input-row .miniphpy-input-sidebar {
+  margin-bottom: -5000px;
+  padding-bottom: 5000px;
+  background-color: #2b2b2b;
+}
+.miniphpy-input-group-header {
+  background-color: #2b2b2b;
+}
+.miniphpy-input-group-header .form-control {
+  background-color: transparent;
+  color: #fff;
+}
+.miniphpy-input-group-header .form-control:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.miniphpy-input-group-header .form-control:focus {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+.tpl-input-group-title {
+  font-weight: 600;
 }

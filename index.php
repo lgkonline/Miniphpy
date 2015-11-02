@@ -1,7 +1,7 @@
 <?php
 
-define("DEBUG_MODE", false);
-define("APP_VERSION", "1.0");
+define("DEBUG_MODE", true);
+define("APP_VERSION", "1.1");
 
 require "classes/UserConfig.php";
 

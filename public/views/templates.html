@@ -27,11 +27,11 @@
 						<input type="text" class="tpl-input-group-title form-control" placeholder="Bundle with no name">
 					</div>
 					
-					<div class="col-lg-4 col-md-6 col-xs-12">
+					<div class="col-lg-5 col-md-8 col-xs-12">
 						<input type="text" class="tpl-input-group-output-file form-control form-control-light" placeholder="Output file">
 					</div>
 					
-					<div class="col-lg-4 col-md-6 col-xs-12">
+					<div class="col-lg-3 col-md-4 col-xs-12">
 						<div class="pull-right">
 							<div class="btn-group">
 								<button type="button" class="tpl-input-group-remove btn btn-default-reverse">
@@ -39,10 +39,7 @@
 									Remove
 								</button>
 								
-								<button type="button" class="tpl-input-group-add btn btn-default-reverse">
-									<span class="glyphicon glyphicon-plus-sign"></span>
-									Add
-								</button>
+
 							</div>
 							
 							<div class="btn-group">
@@ -70,15 +67,42 @@
 				</div>
 			</div>
 			
-			<div class="tpl-input-group-inputs list-group">
+			<div class="miniphpy-input-row row">
+				<div class="col-md-3">
+					<div class="miniphpy-input-sidebar">
+						<div class="miniphpy-input-menu btn-group-vertical" style="width: 100%">
+							<button type="button" class="tpl-input-group-add btn btn-default-reverse">
+								<span class="glyphicon glyphicon-plus-sign"></span>
+								Add an input file
+							</button>
+							
+							<button type="button" class="tpl-input-group-edit btn btn-default-reverse">
+								<span class="glyphicon glyphicon-pencil"></span>
+								Edit manually
+							</button>
+						</div>
+					</div>
+				</div>		
+				
+				<div class="col-md-9">
+					<div class="tpl-input-group-inputs list-group"></div>
+					
+					<textarea 
+						class="tpl-input-group-inputs-textarea form-control" 
+						style="display: none; min-height: 150px;"
+						spellcheck="false"
+					></textarea>
+				</div>		
 			</div>
+			
+			
 		</div>
 	</article>
 	
 	<article id="tpl-input">
 		<div data-id="" class="input-id list-group-item">
 			<div class="input-group">
-				<input type="text" class="tpl-input-file form-control" placeholder="Enter a path or an URL">
+				<input type="text" class="tpl-input-file form-control" placeholder="Enter a path or an URL" spellcheck="false">
 				
 				<span class="input-group-btn">
 					<button type="button" class="tpl-input-remove btn btn-default-reverse">
@@ -100,7 +124,7 @@
 	
 	<article id="tpl-no-inputs">
 		<div class="no-inputs">
-			<h1 class="no-inputs-arrow"><span class="glyphicon glyphicon-arrow-up"></span></h1>
+			<h1 class="no-inputs-arrow"><span class="glyphicon glyphicon-arrow-left"></span></h1>
 			<h1 class="no-inputs-info">Add your first input file</h1>
 		</div>
 	</article>

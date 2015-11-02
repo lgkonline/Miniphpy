@@ -14,16 +14,7 @@
 }
 
 .no-inputs {
-    text-align: right;
     padding-bottom: 20px;
-    
-    .no-inputs-arrow {
-        padding-right: 150px;
-    }
-    
-    .no-inputs-info {
-        padding-right: 20px;
-    }
 }
  
 .no-bundles {
@@ -36,4 +27,41 @@
     .add-input-group {
         margin-bottom: 10px;
     }
+}
+
+.miniphpy-input-menu {
+    .btn {
+        text-align: left;
+    }
+}
+
+.miniphpy-input-row {
+    overflow: hidden;
+    
+    .miniphpy-input-sidebar {
+        margin-bottom: -5000px;
+        padding-bottom: 5000px;   
+        background-color: darken(@btn-default-bg, 3%);     
+    }
+}
+
+.miniphpy-input-group-header {
+    background-color: darken(@btn-default-bg, 3%);
+    
+    .form-control {
+        background-color: transparent;
+        color: #fff;
+    }
+    
+    .form-control:hover {
+        background-color: fade(#fff, 10%);
+    }
+    
+    .form-control:focus {
+        background-color: fade(#fff, 15%);
+    }
+}
+
+.tpl-input-group-title {
+    font-weight: 600;
 }
