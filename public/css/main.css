@@ -7627,6 +7627,9 @@ textarea.form-control.config-modal-code {
   right: 0;
   z-index: 4;
 }
+.dropdown-menu {
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+}
 .no-inputs,
 .no-bundles {
   color: #999999;
