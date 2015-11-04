@@ -3,58 +3,6 @@ var availableGroupTypes = ["js", "css"];
 var availableCompressionOptions = ["remote", "local"];
 var timer;
 
-function saveChanges(restart) {
-	if (typeof restart == "undefined" || restart == null) {
-		restart = false;
-	}
-	
-	$.ajax({
-		url: "index.php?action=update-config",
-		type: "POST",
-		data: { "config": JSON.stringify(config) },
-		dataType: "json",
-		success: function(response) {
-			console.log(response);
-			if (restart) {
-				location.reload();
-			}
-			else {
-				receiveData();
-			}
-		}
-	});
-}
-
-function makeInputID(inputGroupID) {
-	var newInputID = 1;
-	
-	while (typeof config.inputGroups[inputGroupID].input[newInputID] != "undefined" || 
-			config.inputGroups[inputGroupID].input[newInputID] != null) {
-				newInputID++;
-			}
-			
-	return newInputID;
-}
-
-function makeInputGroupID() {
-	var newInputGroupID = 1;
-	
-	while (typeof config.inputGroups[newInputGroupID] != "undefined" || 
-			config.inputGroups[newInputGroupID] != null) {
-				newInputGroupID++;
-			}
-			
-	return newInputGroupID;
-}
-
-function startLoading() {
-	$("#loading").show();
-}
-
-function endLoading() {
-	$("#loading").hide();
-}
-
 function receiveData() {
 	startLoading();
 	
@@ -66,348 +14,112 @@ function receiveData() {
 			endLoading();
 			
 			config = receivedConfig;
-			var countInputGroups = 0;
+			var countBundles = 0;
 			console.log(config);
 			
-			$("#input-groups").empty();
+			$("#projects, #project-tabs").empty();
 			
-			$.each(config.inputGroups, function(currInputGroupKey, currInputGroup) {
-				countInputGroups++;
+			$.each(config.projects, function(currProjectKey, currProject) {
+				console.log(currProjectKey);
+				console.log(currProject);
+				var projectDomID = "project-" + currProjectKey;
 				
-				var inputGroupDom = $("#tpl-input-group").clone();
-				var dropdownID = "dropdown-" + currInputGroupKey;
+				var projectTabDom = $("#tpl-project-tab").clone();
+				$(projectTabDom).find(".project-tab-link").attr("href", "#" + projectDomID);
+				$(projectTabDom).find(".project-tab-link").attr("aria-controls", projectDomID);
+				$(projectTabDom).find(".project-tab-link").attr("data-project-id", currProjectKey);
+				$(projectTabDom).find(".project-tab-link").html(currProject.title);
+				$("#project-tabs").append($(projectTabDom).html());
 				
-				$(inputGroupDom).find(".input-group-id").attr("data-id", currInputGroupKey);
+				var projectDom = $("#tpl-project").clone();
+				$(projectDom).find(".project-id").attr("data-id", currProjectKey);
+				$(projectDom).find(".project-id").attr("id", projectDomID);
 				
-				$(inputGroupDom).find(".tpl-input-group-type-dropdown-toggle").addClass("group-type-" + currInputGroup.groupType);
-				$(inputGroupDom).find(".tpl-input-group-type-dropdown-toggle").attr("id", dropdownID);
-				$(inputGroupDom).find(".tpl-input-group-type-dropdown-menu").attr("aria-labelledby", dropdownID);
+				$(projectDom).find(".edit-project-title-input").attr("value", currProject.title);
 				
-				$(inputGroupDom).find(".tpl-input-group-type").text(currInputGroup.groupType);
-				$(inputGroupDom).find(".tpl-input-group-output-file").attr("value", currInputGroup.outputFile);
-				$(inputGroupDom).find(".tpl-input-group-title").attr("value", currInputGroup.title);
-				
-				var countInputs = 0;
-				
-				$(inputGroupDom).find(".tpl-input-group-inputs").empty();
-				
-				// Place inputs
-				$.each(currInputGroup.input, function(currInputKey, currInput) {
-					countInputs++;
+				$(projectDom).find(".bundles").empty();
+				$.each(currProject.bundles, function(currBundleKey, currBundle) {
+					countBundles++;
 					
-					var inputDom = $("#tpl-input").clone();
+					var bundleDom = $("#tpl-bundle").clone();
+					var dropdownID = "dropdown-" + currBundleKey;
 					
-					$(inputDom).find(".input-id").attr("data-id", currInputKey);
+					$(bundleDom).find(".input-group-id").attr("data-id", currBundleKey);
 					
-					$(inputDom).find(".tpl-input-file").attr("value", currInput.file);
-					$(inputDom).find(".tpl-input-position").text(currInput.position);
+					$(bundleDom).find(".tpl-input-group-type-dropdown-toggle").addClass("group-type-" + currBundle.dataType);
+					$(bundleDom).find(".tpl-input-group-type-dropdown-toggle").attr("id", dropdownID);
+					$(bundleDom).find(".tpl-input-group-type-dropdown-menu").attr("aria-labelledby", dropdownID);
 					
-					$(inputGroupDom).find(".tpl-input-group-inputs").append($(inputDom).html());
+					$(bundleDom).find(".tpl-input-group-type").text(currBundle.dataType);
+					$(bundleDom).find(".tpl-input-group-output-file").attr("value", currBundle.outputFile);
+					$(bundleDom).find(".tpl-input-group-title").attr("value", currBundle.title);
 					
-					$(inputGroupDom).find(".tpl-input-group-inputs-textarea").append(currInput.file + "\n");
-				});
-				
-				if (countInputs == 0) {
-					var noInputsDom = $("#tpl-no-inputs").clone();
-					$(inputGroupDom).find(".tpl-input-group-inputs").html($(noInputsDom).html());
-				}
-				
-				// Remove current group type as a option from dropdown
-				$(inputGroupDom).find(".tpl-input-group-type-dropdown-option").each(function() {
-					if ($(this).attr("data-value") == currInputGroup.groupType) {
-						$(this).remove();
+					var countInputs = 0;
+					
+					$(bundleDom).find(".tpl-input-group-inputs").empty();
+					
+					// Place inputs
+					$.each(currBundle.inputs, function(currInputKey, currInput) {
+						countInputs++;
+						
+						var inputDom = $("#tpl-input").clone();
+						
+						$(inputDom).find(".input-id").attr("data-id", currInputKey);
+						
+						$(inputDom).find(".tpl-input-file").attr("value", currInput.file);
+						$(inputDom).find(".tpl-input-position").text(currInput.position);
+						
+						$(bundleDom).find(".tpl-input-group-inputs").append($(inputDom).html());
+						
+						$(bundleDom).find(".tpl-input-group-inputs-textarea").append(currInput.file + "\n");
+					});
+					
+					if (countInputs == 0) {
+						var noInputsDom = $("#tpl-no-inputs").clone();
+						$(bundleDom).find(".tpl-input-group-inputs").html($(noInputsDom).html());
 					}
-				});
-				
-				// Mark active compression option
-				$(inputGroupDom).find(".tpl-input-group-compression-option").each(function() {
-					if ($(this).attr("data-value") == currInputGroup.compressionOption) {
-						$(this).addClass("active");
+					
+					// Remove current group type as a option from dropdown
+					$(bundleDom).find(".tpl-input-group-type-dropdown-option").each(function() {
+						if ($(this).attr("data-value") == currBundle.dataType) {
+							$(this).remove();
+						}
+					});
+					
+					// Mark active compression option
+					$(bundleDom).find(".tpl-input-group-compression-option").each(function() {
+						if ($(this).attr("data-value") == currBundle.compressionOption) {
+							$(this).addClass("active");
+						}
+					});
+					
+					// Mark auto refresh btn
+					if (currBundle.autoRefresh == true) {
+						$(bundleDom).find(".tpl-input-group-toggle-auto-refresh").addClass("btn-primary-reverse");
 					}
-				});
-				
-				// Mark auto refresh btn
-				if (currInputGroup.autoRefresh == true) {
-					$(inputGroupDom).find(".tpl-input-group-toggle-auto-refresh").addClass("btn-primary-reverse");
-				}
-				else {
-					$(inputGroupDom).find(".tpl-input-group-toggle-auto-refresh").addClass("btn-default-reverse");
-				}
-				
-				$("#input-groups").append($(inputGroupDom).html());
-				
-				if (currInputGroup.autoRefresh == true) {
-					minify(currInputGroupKey, ".input-group-id[data-id='" + currInputGroupKey + "'] .tpl-input-group-minify", true);
-				}				
-			}); // end of each inputGroup
-			
-			if (countInputGroups == 0) {
-				var noBundlesDom = $("#tpl-no-bundles").clone();
-				$("#input-groups").html($(noBundlesDom).html());
-			}
-			
-			$(".dropdown-toggle").dropdown();
-			
-			// Btn Minify
-			$(".tpl-input-group-minify").click(function() {
-				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
-				var minifyBtn = this;	
-				minify(inputGroupID, minifyBtn);			
-			});
-			
-			// Btn Add input
-			$(".tpl-input-group-add").click(function() {
-				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
-				var inputID = makeInputID(inputGroupID);
-				
-				config.inputGroups[inputGroupID].input[inputID] = {
-					file: "",
-					position: inputID
-				};
-				
-				saveChanges();
-			});
-			
-			// Btn Remove input
-			$(".tpl-input-remove").click(function() {
-				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
-				var inputID = $(this).closest(".input-id").attr("data-id");
-				
-				delete config.inputGroups[inputGroupID].input[inputID];
-				
-				saveChanges();
-			});
-			
-			// Changed input
-			$(".tpl-input-file").blur(function() {
-				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
-				var inputID = $(this).closest(".input-id").attr("data-id");
-				var file = $(this).val();
-				
-				config.inputGroups[inputGroupID].input[inputID].file = file;
-				
-				saveChanges();
-			});
-			
-			// Toggle textarea for input files
-			$(".tpl-input-group-edit").click(function() {
-				$(this).closest(".input-group-id").find(".tpl-input-group-inputs-textarea ").toggle();
-				$(this).closest(".input-group-id").find(".list-group").toggle();
-				
-				$(this).toggleClass("active");
-				
-				// $(this).closest(".tpl-input-group-inputs-textarea").show();
-				// $(this).closest(".input-groups").toggle();
-			});
-			
-			// Changed input textarea
-			$(".tpl-input-group-inputs-textarea").blur(function() {
-				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
-				
-				var inputFiles = $(this).val().split("\n");
-				var input = {};
-				console.log(inputFiles);
-				
-				var i = 0;
-				
-				$.each(inputFiles, function(currInputFileKey, currInputFile) {
-					if (currInputFile != "") {
-						i++;
-						input[i] = {
-							file: currInputFile,
-							position: i
-						};
+					else {
+						$(bundleDom).find(".tpl-input-group-toggle-auto-refresh").addClass("btn-default-reverse");
 					}
-				});
-				console.log(input);
+					
+					$(projectDom).find(".bundles").append($(bundleDom).html());
+					
+					if (currBundle.autoRefresh == true) {
+						minify(currProjectKey, currBundleKey, ".input-group-id[data-id='" + currBundleKey + "'] .tpl-input-group-minify", true);
+					}				
+				}); // end of each inputGroup	
 				
-				config.inputGroups[inputGroupID].input = input;
+				if (countBundles == 0) {
+					$(projectDom).find(".bundles").empty();
+					var noBundlesDom = $("#tpl-no-bundles").clone();
+					$(projectDom).find(".bundles").html($(noBundlesDom).html());
+				}	
 				
-				saveChanges();
-			});
+				$("#projects").append($(projectDom).html());
+			}); // each project
 			
-			// Changed group
-			$(".tpl-input-group-output-file").blur(function() {
-				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
-				
-				config.inputGroups[inputGroupID].outputFile = $(this).val();
-				
-				saveChanges();
-			});
-			
-			// Changed bundle title
-			$(".tpl-input-group-title").blur(function() {
-				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
-				
-				config.inputGroups[inputGroupID].title = $(this).val();
-				
-				saveChanges();
-			});
-			
-			// Remove group
-			$(".tpl-input-group-remove").click(function() {
-				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
-				
-				delete config.inputGroups[inputGroupID];
-				
-				saveChanges();
-			});
-			
-			// Change input group type
-			$(".tpl-input-group-type-dropdown-option").click(function() {
-				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
-				
-				config.inputGroups[inputGroupID].groupType = $(this).attr("data-value");
-				
-				saveChanges();
-			});
-			
-			// Change compression option
-			$(".tpl-input-group-compression-option:not(.active)").click(function() {
-				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
-				config.inputGroups[inputGroupID].compressionOption = $(this).attr("data-value");
-				saveChanges();
-			});
-			
-			// Toggle auto refresh
-			$(".tpl-input-group-toggle-auto-refresh").click(function() {
-				var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
-				var restart = false;
-				
-				if (config.inputGroups[inputGroupID].autoRefresh == true) {
-					config.inputGroups[inputGroupID].autoRefresh = false;
-					console.log("clear it");
-					restart = true;
-					// window.clearTimeout(timer);
-				}
-				else {
-					config.inputGroups[inputGroupID].autoRefresh = true;
-				}
-				
-				saveChanges(restart);
-			});
+			// Out sourced to ajax-ready.js
+			ajaxReady();
 			
 		} // end of success function
 	}); // end of ajax
 } // end of receiveData()
-			
-function minify(inputGroupID, minifyBtn, autoRefresh) {
-	if (typeof autoRefresh == "undefined" || autoRefresh == null) {
-		autoRefresh = false;
-	}
-	
-	if (config.inputGroups[inputGroupID].outputFile != "") {
-		$(minifyBtn).find(".tpl-input-group-minify-icon").toggleClass("glyphicon-play glyphicon-refresh");
-		$(minifyBtn).find(".tpl-input-group-minify-icon").addClass("spin");
-		
-		$.ajax({
-			url: "index.php?action=minify",
-			data: {"inputGroupID": inputGroupID},
-			type: "POST",
-			dataType: "json",
-			success: function(response) {
-				console.log(response);
-				
-				toggleMinifyBtnStatus(minifyBtn, "btn-success", "glyphicon-ok");
-				
-				if (autoRefresh) {
-					timer = setTimeout(function() {
-						console.log("new interval");
-						minify(inputGroupID, minifyBtn, config.inputGroups[inputGroupID].autoRefresh);
-					}, 4000);
-				}
-			},
-			error: function(response) {
-				console.log(response);
-				
-				$.toaster({ 
-					priority : 'danger',
-					title : 'Error', 
-					message : response.responseJSON.response
-				});
-				
-				toggleMinifyBtnStatus(minifyBtn, "btn-danger", "glyphicon-remove");
-			}
-		});
-	}
-	else {
-		$.toaster({ 
-			priority : 'warning',
-			title : 'Warning', 
-			message : 'Make sure to set the output file.'
-		});
-	}
-}
-
-function toggleMinifyBtnStatus(btn, btnClass, iconClass) {
-	var defaultBtnClass = "btn-primary";
-	var defaultIconClass = "glyphicon-refresh";
-	var loadingIconClass = "glyphicon-play";
-	
-	$(btn).toggleClass(defaultBtnClass + " " + btnClass);
-	$(btn).find(".tpl-input-group-minify-icon").removeClass("spin");
-	$(btn).find(".tpl-input-group-minify-icon").toggleClass(defaultIconClass + " " + iconClass);
-	
-	setTimeout(function() {
-		$(btn).toggleClass(defaultBtnClass + " " + btnClass);
-		$(btn).find(".tpl-input-group-minify-icon").toggleClass(loadingIconClass + " " + iconClass);
-	}, 3000);
-}
-
-$(document).ready(function() {
-	// Load available group types
-	$("#tpl-input-group .tpl-input-group-type-dropdown-menu").empty();
-	$.each(availableGroupTypes, function(currAvailableGroupTypeKey, currAvailableGroupType) {
-		$("#tpl-input-group .tpl-input-group-type-dropdown-menu").append(
-			'<li class="tpl-input-group-type-dropdown-option" data-value="' + currAvailableGroupType + '">' +
-				'<a href="javascript:void(0);">' +
-					currAvailableGroupType.toUpperCase() +
-				'</a>' +
-			'</li>'
-		);
-	});
-	
-	// Load available compression options
-	$("#tpl-input-group .tpl-input-group-compression-option-dropdown-menu").empty();
-	$.each(availableCompressionOptions, function(currAvailableCompressionOptionKey, currAvailableCompressionOption) {
-		$("#tpl-input-group .tpl-input-group-compression-option-dropdown-menu").append(
-			'<li class="tpl-input-group-compression-option" data-value="' + currAvailableCompressionOption + '">' +
-				'<a href="javascript:void(0);">' +
-					currAvailableCompressionOption +
-				'</a>' +
-			'</li>'
-		);
-	});
-	
-	receiveData();
-			
-	// Add input group (bundle)
-	$(".add-input-group").click(function() {
-		var inputGroupID = makeInputGroupID();
-		
-		config.inputGroups[inputGroupID] = {
-			groupType: "js",
-			input: {},
-			outputFile: "",
-			title: "",
-			autoRefresh: false,
-			compressionOption: "remote"
-		};
-		
-		saveChanges();
-	});
-});
-
-$("#export-config-modal").on("show.bs.modal", function() {
-	$(this).find(".config-modal-code").html(JSON.stringify(config));
-});
-
-$("#export-config-modal, #import-config-modal").on("shown.bs.modal", function() {
-	$(this).find(".config-modal-code").select();
-});
-
-$("#import-config-go").click(function() {
-	config = JSON.parse($("#import-config-code").val());
-	saveChanges();
-	$('#import-config-modal').modal('hide');
-});

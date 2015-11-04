@@ -7578,7 +7578,7 @@ fieldset[disabled] .group-type-css.active {
   flex: 1;
 }
 #main,
-#input-groups {
+.bundles {
   padding-top: 20px;
 }
 .form-control-light {
@@ -7627,6 +7627,13 @@ textarea.form-control.config-modal-code {
   right: 0;
   z-index: 4;
 }
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  border-top: 1px solid #15eea0;
+  border-left: 1px solid #101010;
+  border-right: 1px solid #101010;
+}
 .dropdown-menu {
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
 }
@@ -7671,4 +7678,10 @@ textarea.form-control.config-modal-code {
 }
 .tpl-input-group-title {
   font-weight: 600;
+}
+#header {
+  padding-bottom: 0px;
+}
+#project-tabs {
+  margin-top: 20px;
 }

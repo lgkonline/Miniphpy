@@ -7460,19 +7460,6 @@ fieldset[disabled] .group-type-css.active {
   color: #0c72ba;
   background-color: #ffffff;
 }
-.miniphpy-input-group-header {
-  background-color: #2b2b2b;
-}
-.miniphpy-input-group-header .form-control {
-  background-color: transparent;
-  color: #fff;
-}
-.miniphpy-input-group-header .form-control:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-.miniphpy-input-group-header .form-control:focus {
-  background-color: rgba(255, 255, 255, 0.15);
-}
 .miniphpy-logo {
   width: 300px;
   display: block;
@@ -7496,7 +7483,7 @@ fieldset[disabled] .group-type-css.active {
   flex: 1;
 }
 #main,
-#input-groups {
+.bundles {
   padding-top: 20px;
 }
 .form-control-light {
@@ -7544,6 +7531,16 @@ textarea.form-control.config-modal-code {
   left: 0;
   right: 0;
   z-index: 4;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  border-top: 1px solid #15eea0;
+  border-left: 1px solid #ffffff;
+  border-right: 1px solid #ffffff;
+}
+.dropdown-menu {
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
 }
 #header,
 #footer {

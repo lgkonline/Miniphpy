@@ -13,20 +13,27 @@ if ($action_get == "minify") {
 		$inputGroupID = 1;
 	}
 	
+	if (filter_input(INPUT_POST, "projectID")) {
+		$projectID = filter_input(INPUT_POST, "projectID");
+	}
+	else {
+		$projectID = 1;
+	}
+	
 	require "classes/Minifier.php";
 	
 	$config = UserConfig::getConfig();
-	$inputGroup = $config->inputGroups->{$inputGroupID};
+	$inputGroup = $config->projects->{$projectID}->bundles->{$inputGroupID};
 	
 	$minifier = new Minifier();
 	$content = "";
 	
-	foreach ($inputGroup->input as $currInput) {
+	foreach ($inputGroup->inputs as $currInput) {
 		if ($currInput->file != "") {
 			// Überprüft ob URL oder Datei existiert
 			if (filter_var($currInput->file, FILTER_VALIDATE_URL) || file_exists($currInput->file)) {
 				$file = file_get_contents($currInput->file);
-				$content .= $file;
+				$content .= $file . " ";
 			}
 			else {
 				// Datei nicht gefunden
@@ -37,7 +44,7 @@ if ($action_get == "minify") {
 	}
 	
 	if ($status_code == 200) {
-		$output = $minifier->minify($inputGroup->groupType, $content, $inputGroup->compressionOption);
+		$output = $minifier->minify($inputGroup->dataType, $content, $inputGroup->compressionOption);
 		
 		$output_file = fopen($inputGroup->outputFile, "w") or die("Unable to open '$inputGroup->outputFile'.");
 		fwrite($output_file, $output);

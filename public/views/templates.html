@@ -1,5 +1,61 @@
 <section class="tpl-area">
-	<article id="tpl-input-group">
+	<article id="tpl-project-tab">
+		<li role="presentation">
+			<a class="project-tab-link" href="" aria-controls="" role="tab" data-toggle="tab" data-project-id="">
+				
+			</a>
+		</li>
+	</article>
+	
+	<article id="tpl-project">
+		<div id="" data-id="" class="project project-id tab-pane active">
+			<div class="row">
+				<div class="col-lg-2 col-md-3">
+					<button type="button" class="add-input-group btn btn-primary btn-outline">
+						<span class="glyphicon glyphicon-plus-sign"></span>
+						Add a new bundle
+					</button>
+				</div>
+				
+				<div class="col-lg-5 col-md-5">
+					<button type="button" class="btn btn-default btn-outline"
+							data-toggle="modal" data-target="#export-config-modal">
+						<span class="glyphicon glyphicon-upload"></span>
+						Export this config
+					</button>
+					
+					<button type="button" class="btn btn-default btn-outline"
+							data-toggle="modal" data-target="#import-config-modal">
+						<span class="glyphicon glyphicon-download"></span>
+						Import external config
+					</button>
+				</div>
+				
+				<div class="col-lg-5 col-md-4">
+					<div class="row">
+						<div class="col-sm-8">
+							<input type="text" class="edit-project-title-input form-control" style="display: none;">
+						</div>
+						
+						<div class="col-sm-4" style="text-align: right;">
+							<button type="button" class="edit-project-title-btn btn btn-default btn-outline btn-slim" title="Rename this project">
+								<span class="glyphicon glyphicon-pencil"></span>
+							</button>
+							
+							<button type="button" class="remove-project btn btn-default btn-outline btn-slim" title="Remove this project">
+								<span class="glyphicon glyphicon-trash"></span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+	
+			
+			<div class="bundles"></div>			
+		</div>
+	</article>
+	
+	<article id="tpl-bundle">
 		<div data-input-group-id="" class="input-group-id panel panel-default">
 			<div class="miniphpy-input-group-header">
 				<div class="row">
