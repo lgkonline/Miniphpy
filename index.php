@@ -1,9 +1,10 @@
 <?php
 
-define("DEBUG_MODE", true);
-define("APP_VERSION", "1.1");
+define("DEBUG_MODE", false);
+define("APP_VERSION", "1.2");
 
 require "classes/UserConfig.php";
+require "classes/LittleHelpers.php";
 
 $action_get = filter_input(INPUT_GET, "action");
 $action_post = filter_input(INPUT_POST, "action");

@@ -30,10 +30,15 @@ if ($action_get == "minify") {
 	
 	foreach ($inputGroup->inputs as $currInput) {
 		if ($currInput->file != "") {
+			// Is relative path, no URL and root path is set
+			if (isset($inputGroup->rootPath) && $inputGroup->rootPath != "" && LittleHelpers::isAbsolutePath($currInput->file) == false && LittleHelpers::isValidUrl($currInput->file) == false) {
+				$currInput->file = $inputGroup->rootPath . DIRECTORY_SEPARATOR . $currInput->file;
+			}
+			
 			// Überprüft ob URL oder Datei existiert
-			if (filter_var($currInput->file, FILTER_VALIDATE_URL) || file_exists($currInput->file)) {
+			if (LittleHelpers::isValidUrl($currInput->file) || file_exists($currInput->file)) {
 				$file = file_get_contents($currInput->file);
-				$content .= $file . " ";
+				$content .= $file . "\n";
 			}
 			else {
 				// Datei nicht gefunden
@@ -45,6 +50,11 @@ if ($action_get == "minify") {
 	
 	if ($status_code == 200) {
 		$output = $minifier->minify($inputGroup->dataType, $content, $inputGroup->compressionOption);
+		
+		// if root path is set 
+		if (isset($inputGroup->rootPath) && $inputGroup->rootPath != "" && LittleHelpers::isAbsolutePath($inputGroup->outputFile) == false) {
+			$inputGroup->outputFile = $inputGroup->rootPath . DIRECTORY_SEPARATOR . $inputGroup->outputFile;
+		}
 		
 		$output_file = fopen($inputGroup->outputFile, "w") or die("Unable to open '$inputGroup->outputFile'.");
 		fwrite($output_file, $output);

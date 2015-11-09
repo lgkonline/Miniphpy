@@ -2,12 +2,28 @@
 
 define("DEBUG_MODE", false);
 
-function getLatestTagUrl($repository, $default = 'master') {
+function getGitHubInfo($repository, $default = 'master') {
     $file = @json_decode(@file_get_contents("https://api.github.com/repos/$repository/tags", false,
         stream_context_create(['http' => ['header' => "User-Agent: Vestibulum\r\n"]])
     ));
-    return sprintf("https://github.com/$repository/archive/%s.zip", $file ? reset($file)->name : $default);
+	
+	if ($file) {
+		$tagName = reset($file)->name;
+		$version = $tagName;
+	}
+	else {
+		$tagName = $default;
+		$version = "unknown";
+	}
+	
+	$retVal = new stdClass();
+	$retVal->downloadUrl = "https://github.com/$repository/releases/download/$tagName/Miniphpy.$tagName.zip";
+	$retVal->version = $version;
+	
+    return $retVal;
 }
+
+$gitHubInfo = getGitHubInfo("lgkonline/miniphpy");
 
 ?>
 
@@ -30,7 +46,7 @@ function getLatestTagUrl($repository, $default = 'master') {
 	</head>
 
 	<body>
-		<header id="header">
+		<header id="header" style="background-color: #fff;">
 			<div class="container">
 				<a href="public" class="miniphpy-logo">
 					<img src="images/logo.svg" alt="Miniphpy" onerror="this.onerror=null; this.src='images/logo.png'">
@@ -65,14 +81,15 @@ function getLatestTagUrl($repository, $default = 'master') {
 				</div>
 				
 				<div class="row">
-					<div class="col-md-4"></div>
-					<div class="col-md-4">
-						<a href="<?php echo getLatestTagUrl("lgkonline/miniphpy"); ?>" class="btn btn-primary btn-lg center-block">
+					<div class="col-lg-4 col-md-2"></div>
+					<div class="col-lg-4 col-md-8">
+						<a href="<?php echo $gitHubInfo->downloadUrl; ?>" class="btn btn-primary btn-lg center-block">
 							<span class="glyphicon glyphicon-arrow-down"></span>
 							Download the latest release
+							<small>(<?php echo $gitHubInfo->version; ?>)</small>
 						</a>						
 					</div>
-					<div class="col-md-4"></div>
+					<div class="col-lg-4 col-md-2"></div>
 				</div>
 				
 				<br><br>

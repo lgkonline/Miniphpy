@@ -18,17 +18,41 @@
 				</div>
 				
 				<div class="col-lg-5 col-md-5">
-					<button type="button" class="btn btn-default btn-outline"
-							data-toggle="modal" data-target="#export-config-modal">
-						<span class="glyphicon glyphicon-upload"></span>
-						Export this config
-					</button>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default btn-outline"
+								data-toggle="modal" data-target="#export-project-modal">
+							<span class="glyphicon glyphicon-upload"></span>
+							Export this project
+						</button>
+						
+						<button type="button" class="btn btn-default btn-outline dropdown-toggle" data-toggle="dropdown">
+							<span class="caret"></span>
+							<span class="sr-only">Toggle Dropdown</span>
+						</button>
+						
+						<ul class="dropdown-menu">
+							<li><a href="#export-config-modal" data-toggle="modal" data-target="#export-config-modal">Export the whole config</a></li>
+						</ul>
+					</div>
 					
-					<button type="button" class="btn btn-default btn-outline"
-							data-toggle="modal" data-target="#import-config-modal">
-						<span class="glyphicon glyphicon-download"></span>
-						Import external config
-					</button>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default btn-outline"
+								data-toggle="modal" data-target="#import-project-modal">
+							<span class="glyphicon glyphicon-download"></span>
+							Import external project
+						</button>
+						
+						<button type="button" class="btn btn-default btn-outline dropdown-toggle" data-toggle="dropdown">
+							<span class="caret"></span>
+							<span class="sr-only">Toggle Dropdown</span>
+						</button>
+						
+						<ul class="dropdown-menu">
+							<li><a href="#import-config-modal" data-toggle="modal" data-target="#import-config-modal">Import and replace the whole config</a></li>
+						</ul>
+					</div>		
+					
+
 				</div>
 				
 				<div class="col-lg-5 col-md-4">
@@ -80,11 +104,11 @@
 					</div>
 					
 					<div class="col-lg-3 col-xs-8">
-						<input type="text" class="tpl-input-group-title form-control" placeholder="Bundle with no name">
+						<input type="text" class="tpl-input-group-title form-control dark-form-control" placeholder="Bundle with no name">
 					</div>
 					
 					<div class="col-lg-5 col-md-8 col-xs-12">
-						<input type="text" class="tpl-input-group-output-file form-control form-control-light" placeholder="Output file">
+						<input type="text" class="tpl-input-group-output-file form-control dark-form-control form-control-light" placeholder="Output file">
 					</div>
 					
 					<div class="col-lg-3 col-md-4 col-xs-12">
@@ -137,6 +161,8 @@
 								Edit manually
 							</button>
 						</div>
+						
+						<input type="text" class="tpl-bundle-root-path form-control dark-form-control form-control-light" placeholder="Root path">
 					</div>
 				</div>		
 				

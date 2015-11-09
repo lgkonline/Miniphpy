@@ -166,6 +166,15 @@ function ajaxReady() {
 		
 		saveChanges(restart);
 	});	
+	
+	// Change root path
+	$(".tpl-bundle-root-path").blur(function() {
+		var projectID = $(this).closest(".project-id").attr("data-id");
+		var inputGroupID = $(this).closest(".input-group-id").attr("data-id");
+		
+		config.projects[projectID].bundles[inputGroupID].rootPath = $(this).val();
+		saveChanges();
+	});
 		
 	// Add input group (bundle)
 	$(".add-input-group").click(function() {
@@ -178,7 +187,8 @@ function ajaxReady() {
 			outputFile: "",
 			title: "",
 			autoRefresh: false,
-			compressionOption: "remote"
+			compressionOption: "remote",
+			rootPath: "./"
 		};
 		
 		saveChanges();

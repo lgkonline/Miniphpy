@@ -45,21 +45,20 @@
     }
 }
 
+.dark-form-control {
+    background-color: transparent;
+    color: #fff;
+    .box-shadow(none);
+}
+.dark-form-control:hover {
+    background-color: fade(#fff, 10%);
+}
+.dark-form-control:focus {
+    background-color: fade(#fff, 15%);
+}
+
 .miniphpy-input-group-header {
     background-color: darken(@btn-default-bg, 3%);
-    
-    .form-control {
-        background-color: transparent;
-        color: #fff;
-    }
-    
-    .form-control:hover {
-        background-color: fade(#fff, 10%);
-    }
-    
-    .form-control:focus {
-        background-color: fade(#fff, 15%);
-    }
 }
 
 .tpl-input-group-title {

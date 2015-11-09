@@ -17,3 +17,8 @@
 	</head>
 
 	<body>
+		<?php if (DEBUG_MODE == true) : ?>
+			<div class="alert alert-warning" style="margin-bottom: 0;">
+				Debug mode is enabled. You can disable it under /index.php.
+			</div>
+		<?php endif; ?>

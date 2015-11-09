@@ -15,13 +15,10 @@ function receiveData() {
 			
 			config = receivedConfig;
 			var countBundles = 0;
-			console.log(config);
 			
 			$("#projects, #project-tabs").empty();
 			
 			$.each(config.projects, function(currProjectKey, currProject) {
-				console.log(currProjectKey);
-				console.log(currProject);
 				var projectDomID = "project-" + currProjectKey;
 				
 				var projectTabDom = $("#tpl-project-tab").clone();
@@ -53,6 +50,8 @@ function receiveData() {
 					$(bundleDom).find(".tpl-input-group-type").text(currBundle.dataType);
 					$(bundleDom).find(".tpl-input-group-output-file").attr("value", currBundle.outputFile);
 					$(bundleDom).find(".tpl-input-group-title").attr("value", currBundle.title);
+					
+					$(bundleDom).find(".tpl-bundle-root-path").attr("value", currBundle.rootPath);
 					
 					var countInputs = 0;
 					

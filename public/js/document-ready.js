@@ -27,16 +27,46 @@ $(document).ready(function() {
 	
 });
 
+/* Modal */
+
+$(".config-modal").on("shown.bs.modal", function() {
+	$(this).find(".config-modal-code").select();
+});
+
+// Export whole config
 $("#export-config-modal").on("show.bs.modal", function() {
 	$(this).find(".config-modal-code").html(JSON.stringify(config));
 });
 
-$("#export-config-modal, #import-config-modal").on("shown.bs.modal", function() {
-	$(this).find(".config-modal-code").select();
+// Export config of current project
+$("#export-project-modal").on("show.bs.modal", function(event) {
+	var button = $(event.relatedTarget);
+	var projectID = button.closest(".project-id").attr("data-id");
+	
+	$(this).find(".config-modal-code").html(JSON.stringify(config.projects[projectID]));
 });
 
+// Set project ID to 'Start import' button as an attribute
+$("#import-project-modal").on("show.bs.modal", function(event) {
+	var button = $(event.relatedTarget);
+	var projectID = button.closest(".project-id").attr("data-id");
+	
+	$("#import-project-go").attr("data-project-id", projectID);
+});
+
+/* Modal ENDE */
+
+// Import and replace the whole config
 $("#import-config-go").click(function() {
 	config = JSON.parse($("#import-config-code").val());
 	saveChanges();
 	$('#import-config-modal').modal('hide');
+});
+
+// Import and replace the config of the current project
+$("#import-project-go").click(function() {
+	var projectID = $(this).attr("data-project-id");
+	config.projects[projectID] = JSON.parse($("#import-project-code").val());
+	saveChanges();
+	$('#import-project-modal').modal('hide');	
 });
