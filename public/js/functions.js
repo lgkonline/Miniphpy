@@ -9,7 +9,6 @@ function saveChanges(restart) {
 		data: { "config": JSON.stringify(config) },
 		dataType: "json",
 		success: function(response) {
-			console.log(response);
 			if (restart) {
 				location.reload();
 			}
