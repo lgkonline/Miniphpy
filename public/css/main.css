@@ -283,6 +283,72 @@ fieldset[disabled] .btn-danger-reverse.active {
   color: #ee3f2c;
   background-color: #ffffff;
 }
+.btn-warning-reverse {
+  color: #ffffff;
+  background-color: #efa640;
+  border-color: rgba(0, 0, 0, 0);
+}
+.btn-warning-reverse:focus,
+.btn-warning-reverse.focus {
+  color: #ffffff;
+  background-color: #f3bc6f;
+  border-color: rgba(64, 64, 64, 0);
+}
+.btn-warning-reverse:hover {
+  color: #ffffff;
+  background-color: #f3bc6f;
+  border-color: rgba(31, 31, 31, 0);
+}
+.btn-warning-reverse:active,
+.btn-warning-reverse.active,
+.open > .dropdown-toggle.btn-warning-reverse {
+  color: #ffffff;
+  background-color: #f3bc6f;
+  border-color: rgba(31, 31, 31, 0);
+}
+.btn-warning-reverse:active:hover,
+.btn-warning-reverse.active:hover,
+.open > .dropdown-toggle.btn-warning-reverse:hover,
+.btn-warning-reverse:active:focus,
+.btn-warning-reverse.active:focus,
+.open > .dropdown-toggle.btn-warning-reverse:focus,
+.btn-warning-reverse:active.focus,
+.btn-warning-reverse.active.focus,
+.open > .dropdown-toggle.btn-warning-reverse.focus {
+  color: #ffffff;
+  background-color: #f6cb90;
+  border-color: rgba(64, 64, 64, 0);
+}
+.btn-warning-reverse:active,
+.btn-warning-reverse.active,
+.open > .dropdown-toggle.btn-warning-reverse {
+  background-image: none;
+}
+.btn-warning-reverse.disabled,
+.btn-warning-reverse[disabled],
+fieldset[disabled] .btn-warning-reverse,
+.btn-warning-reverse.disabled:hover,
+.btn-warning-reverse[disabled]:hover,
+fieldset[disabled] .btn-warning-reverse:hover,
+.btn-warning-reverse.disabled:focus,
+.btn-warning-reverse[disabled]:focus,
+fieldset[disabled] .btn-warning-reverse:focus,
+.btn-warning-reverse.disabled.focus,
+.btn-warning-reverse[disabled].focus,
+fieldset[disabled] .btn-warning-reverse.focus,
+.btn-warning-reverse.disabled:active,
+.btn-warning-reverse[disabled]:active,
+fieldset[disabled] .btn-warning-reverse:active,
+.btn-warning-reverse.disabled.active,
+.btn-warning-reverse[disabled].active,
+fieldset[disabled] .btn-warning-reverse.active {
+  background-color: #efa640;
+  border-color: rgba(0, 0, 0, 0);
+}
+.btn-warning-reverse .badge {
+  color: #efa640;
+  background-color: #ffffff;
+}
 .btn.btn-slim {
   padding: 8px 8px;
 }

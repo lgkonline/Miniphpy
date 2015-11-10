@@ -218,13 +218,22 @@ function ajaxReady() {
 	});	
 	
 	// Remove project
-	$(".remove-project").click(function() {
-		var projectID = $(this).closest(".project-id").attr("data-id");
+	$("#delete-project-go").click(function() {
+		var projectID = $(this).attr("data-project-id");
 		
 		delete config.projects[projectID];
 		saveChanges();
+		$("#delete-project-modal").modal("hide");
 	});
 	
+	// Remove project warning
+	$("#delete-project-modal").on("show.bs.modal", function(event) {
+		var button = $(event.relatedTarget);
+		var projectID = button.closest(".project-id").attr("data-id");
+		console.log(projectID);
+		$("#delete-project-go").attr("data-project-id", projectID);
+	});
+		
 	// Toggle rename project
 	$(".edit-project-title-btn").click(function() {
 		$(this).toggleClass("active");

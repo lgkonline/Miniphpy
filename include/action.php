@@ -40,6 +40,11 @@ if ($action_get == "minify") {
 				$file = file_get_contents($currInput->file);
 				$content .= $file . "\n";
 			}
+			// Maybe user missed to set the protocol to url
+			elseif (LittleHelpers::isValidUrl("http:" . $currInput->file)) {
+				$file = file_get_contents("http:" . $currInput->file);
+				$content .= $file . "\n";
+			}
 			else {
 				// Datei nicht gefunden
 				$status_code = 400;

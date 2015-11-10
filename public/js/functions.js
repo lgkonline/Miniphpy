@@ -19,9 +19,16 @@ function saveChanges(restart) {
 	});
 }
 
+function isBaseIDValid(newID) {
+	return typeof newID == "undefined" || newID == "undefined" || newID == null || isNaN(newID);
+}
+
 function makeInputID(projectID, bundleID) {
 	// Get base ID
 	var newInputID = Object.keys(config.projects[projectID].bundles[bundleID].inputs)[0];
+	if (isBaseIDValid(newInputID)) {
+		newProjectID = 1;
+	}
 	
 	while (typeof config.projects[projectID].bundles[bundleID].inputs[newInputID] != "undefined" || 
 			config.projects[projectID].bundles[bundleID].inputs[newInputID] != null) {
@@ -34,6 +41,9 @@ function makeInputID(projectID, bundleID) {
 function makeBundleID(projectID) {
 	// Get base ID
 	var newBundleID = Object.keys(config.projects[projectID].bundles)[0];
+	if (isBaseIDValid(newBundleID)) {
+		newProjectID = 1;
+	}
 	
 	while (typeof config.projects[projectID].bundles[newBundleID] != "undefined" || 
 			config.projects[projectID].bundles[newBundleID] != null) {
@@ -46,6 +56,9 @@ function makeBundleID(projectID) {
 function makeProjectID() {
 	// Get base ID
 	var newProjectID = Object.keys(config.projects)[0];
+	if (isBaseIDValid(newProjectID)) {
+		newProjectID = 1;
+	}
 	
 	while (typeof config.projects[newProjectID] != "undefined" || 
 			config.projects[newProjectID] != null) {
