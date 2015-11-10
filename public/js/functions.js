@@ -20,7 +20,8 @@ function saveChanges(restart) {
 }
 
 function makeInputID(projectID, bundleID) {
-	var newInputID = 1;
+	// Get base ID
+	var newInputID = Object.keys(config.projects[projectID].bundles[bundleID].inputs)[0];
 	
 	while (typeof config.projects[projectID].bundles[bundleID].inputs[newInputID] != "undefined" || 
 			config.projects[projectID].bundles[bundleID].inputs[newInputID] != null) {
@@ -31,7 +32,8 @@ function makeInputID(projectID, bundleID) {
 }
 
 function makeBundleID(projectID) {
-	var newBundleID = 1;
+	// Get base ID
+	var newBundleID = Object.keys(config.projects[projectID].bundles)[0];
 	
 	while (typeof config.projects[projectID].bundles[newBundleID] != "undefined" || 
 			config.projects[projectID].bundles[newBundleID] != null) {
@@ -42,7 +44,8 @@ function makeBundleID(projectID) {
 }
 
 function makeProjectID() {
-	var newProjectID = 1;
+	// Get base ID
+	var newProjectID = Object.keys(config.projects)[0];
 	
 	while (typeof config.projects[newProjectID] != "undefined" || 
 			config.projects[newProjectID] != null) {

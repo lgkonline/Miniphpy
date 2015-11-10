@@ -1,7 +1,7 @@
 <?php
 
 define("DEBUG_MODE", false);
-define("APP_VERSION", "1.2");
+define("APP_VERSION", "1.3");
 
 require "classes/UserConfig.php";
 require "classes/LittleHelpers.php";

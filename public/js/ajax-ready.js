@@ -87,6 +87,17 @@ function ajaxReady() {
 		
 		$.each(inputFiles, function(currInputFileKey, currInputFile) {
 			if (currInputFile != "") {
+				// Is script HTML tag
+				if (/<[script][\s\S]*>/i.test(currInputFile)) {
+					// Take input file from src attribute
+					currInputFile = $(currInputFile).attr("src");
+				}
+				// Is link HTML tag
+				else if (/<[link][\s\S]*>/i.test(currInputFile)) {
+					// Take input file from href attribute
+					currInputFile = $(currInputFile).attr("href");
+				}
+				
 				i++;
 				input[i] = {
 					file: currInputFile,
@@ -227,5 +238,11 @@ function ajaxReady() {
 		
 		config.projects[projectID].title = $(this).val();
 		saveChanges();
+	});
+	
+	// On dblclick project tab toggle rename
+	$("#project-tabs > li").dblclick(function() {
+		var projectID = $(this).find(".project-tab-link").attr("data-project-id");
+		$("#project-" + projectID).find(".edit-project-title-btn").click();
 	});
 }
