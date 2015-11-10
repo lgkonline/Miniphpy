@@ -230,7 +230,6 @@ function ajaxReady() {
 	$("#delete-project-modal").on("show.bs.modal", function(event) {
 		var button = $(event.relatedTarget);
 		var projectID = button.closest(".project-id").attr("data-id");
-		console.log(projectID);
 		$("#delete-project-go").attr("data-project-id", projectID);
 	});
 		
