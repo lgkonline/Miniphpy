@@ -56,6 +56,8 @@ if ($action_get == "minify") {
 	if ($status_code == 200) {
 		$output = $minifier->minify($inputGroup->dataType, $content, $inputGroup->compressionOption);
 		
+		$output = $content;
+		
 		// if root path is set 
 		if (isset($inputGroup->rootPath) && $inputGroup->rootPath != "" && LittleHelpers::isAbsolutePath($inputGroup->outputFile) == false) {
 			$inputGroup->outputFile = $inputGroup->rootPath . DIRECTORY_SEPARATOR . $inputGroup->outputFile;

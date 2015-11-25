@@ -8,7 +8,7 @@
 
 
 
-.no-inputs, 
+.no-inputs,
 .no-bundles {
     color: lighten(@btn-default-bg, 40%);
 }
@@ -16,7 +16,7 @@
 .no-inputs {
     padding-bottom: 20px;
 }
- 
+
 .no-bundles {
     .no-bundles-arrow {
         padding-left: 60px;
@@ -37,11 +37,21 @@
 
 .miniphpy-input-row {
     overflow: hidden;
-    
+
     .miniphpy-input-sidebar {
         margin-bottom: -5000px;
-        padding-bottom: 5000px;   
-        background-color: darken(@btn-default-bg, 3%);     
+        padding-bottom: 5000px;
+        background-color: darken(@btn-default-bg, 3%);
+    }
+
+    .input-group-col {
+      padding-top: 15px;
+    }
+
+    .tpl-input-group-inputs {
+      .list-group-item {
+        padding: 0 15px 0 0;
+      }
     }
 }
 
@@ -63,6 +73,11 @@
 
 .tpl-input-group-title {
     font-weight: 600;
+}
+
+.root-path-label {
+  padding: 0 16px;
+  margin-top: 14px;
 }
 
 #header {

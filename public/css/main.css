@@ -7729,6 +7729,12 @@ textarea.form-control.config-modal-code {
   padding-bottom: 5000px;
   background-color: #2b2b2b;
 }
+.miniphpy-input-row .input-group-col {
+  padding-top: 15px;
+}
+.miniphpy-input-row .tpl-input-group-inputs .list-group-item {
+  padding: 0 15px 0 0;
+}
 .dark-form-control {
   background-color: transparent;
   color: #fff;
@@ -7746,6 +7752,10 @@ textarea.form-control.config-modal-code {
 }
 .tpl-input-group-title {
   font-weight: 600;
+}
+.root-path-label {
+  padding: 0 16px;
+  margin-top: 14px;
 }
 #header {
   padding-bottom: 0px;
