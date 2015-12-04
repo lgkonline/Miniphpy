@@ -1,29 +1,16 @@
 <?php
 
+require "../classes/LittleHelpers.php";
+
 define("DEBUG_MODE", false);
 
-function getGitHubInfo($repository, $default = 'master') {
-    $file = @json_decode(@file_get_contents("https://api.github.com/repos/$repository/tags", false,
-        stream_context_create(['http' => ['header' => "User-Agent: Vestibulum\r\n"]])
-    ));
-	
-	if ($file) {
-		$tagName = reset($file)->name;
-		$version = $tagName;
-	}
-	else {
-		$tagName = $default;
-		$version = "unknown";
-	}
-	
-	$retVal = new stdClass();
-	$retVal->downloadUrl = "https://github.com/$repository/releases/download/$tagName/Miniphpy.$tagName.zip";
-	$retVal->version = $version;
-	
-    return $retVal;
-}
+$action = filter_input(INPUT_GET, "action");
 
-$gitHubInfo = getGitHubInfo("lgkonline/miniphpy");
+if ($action == "github-info") {
+	header("Content-type: text/json");
+	echo json_encode(LittleHelpers::getGitHubInfo("lgkonline/miniphpy"));
+	exit;
+}
 
 ?>
 
@@ -83,10 +70,10 @@ $gitHubInfo = getGitHubInfo("lgkonline/miniphpy");
 				<div class="row">
 					<div class="col-lg-4 col-md-2"></div>
 					<div class="col-lg-4 col-md-8">
-						<a href="<?php echo $gitHubInfo->downloadUrl; ?>" class="btn btn-primary btn-lg center-block">
+						<a id="download-btn" href="" class="btn btn-primary btn-lg center-block" style="opacity: 0;">
 							<span class="glyphicon glyphicon-arrow-down"></span>
 							Download the latest release
-							<small>(<?php echo $gitHubInfo->version; ?>)</small>
+							<small id="download-version"></small>
 						</a>						
 					</div>
 					<div class="col-lg-4 col-md-2"></div>

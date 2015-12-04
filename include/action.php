@@ -92,4 +92,31 @@ if ($action_get == "update-config") {
 	echo json_encode(array("response" => $response));
 }
 
+if ($action_get == "check-version") {
+	$gitHubInfo = LittleHelpers::getGitHubInfo("lgkonline/miniphpy");
+	
+	$response = new StdClass();
+	$response->text = "";
+	
+	if (isset($gitHubInfo->version)) {
+		$latestVersion = str_replace("v", "", $gitHubInfo->version);
+		
+		if ($latestVersion > APP_VERSION) {
+			$response->isLatestVersion = false;
+			$response->text = "A new version is available: " . $latestVersion;
+		}
+		else {
+			$response->isLatestVersion = true;
+			$response->text = "You already have the latest version installed.";
+		}
+		
+		$response->latestVersion = $latestVersion;
+	}
+	else {
+		$response->text = "We couldn't check the versions.";
+	}
+	
+	echo json_encode($response);
+}
+
 exit;
