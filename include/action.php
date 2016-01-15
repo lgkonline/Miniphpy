@@ -82,10 +82,8 @@ if ($action_get == "update-config") {
 	$status_code = 200;
 	
 	$configJson = filter_input(INPUT_POST, "config");
-	
-	$config_file = fopen(UserConfig::$configFile, "w") or die("Unable to open 'UserConfig::$configFile'.");
-	fwrite($config_file, $configJson);
-	fclose($config_file);
+    
+    UserConfig::updateConfig($configJson);
 	
 	http_response_code($status_code);
 	
@@ -117,6 +115,11 @@ if ($action_get == "check-version") {
 	}
 	
 	echo json_encode($response);
+}
+
+if ($action_get == "ext-config") {
+    $configPath = filter_input(INPUT_GET, "configPath");
+    echo file_get_contents($configPath);
 }
 
 exit;

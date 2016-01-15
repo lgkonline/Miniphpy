@@ -31,6 +31,8 @@ function receiveData() {
 				var projectDom = $("#tpl-project").clone();
 				$(projectDom).find(".project-id").attr("data-id", currProjectKey);
 				$(projectDom).find(".project-id").attr("id", projectDomID);
+                
+				$(projectDom).find(".project-root-path").attr("value", currProject.rootPath);
 
 				$(projectDom).find(".edit-project-title-input").attr("value", currProject.title);
 

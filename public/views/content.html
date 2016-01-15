@@ -3,6 +3,17 @@
 		<a href="public" class="miniphpy-logo">
 			<img src="public/images/logo.svg" alt="Miniphpy" onerror="this.onerror=null; this.src='public/images/logo.png'">
 		</a>
+        
+        <div class="dropdown pull-right" style="margin-top: 20px;">
+            <button id="config-menu" type="button" class="btn btn-default btn-slim" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-menu-hamburger"></span>
+            </button>
+            
+            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="config-menu">
+                <li><a href="javascript:void(0);" class="add-project">Add a new project</a></li>
+                <li><a href="javascript:void(0);" data-toggle="modal" data-target="#add-ext-config-modal">Add an external config file</a></li>
+            </ul>            
+        </div>
 		
 		<ul id="project-tabs" class="nav nav-tabs" role="tablist"></ul>	
 	</div>
@@ -17,8 +28,6 @@
 			<div class="sk-cube4 sk-cube"></div>
 			<div class="sk-cube3 sk-cube"></div>
 		</div>
-		
-		
 		
 		<div id="projects" class="tab-content">
 		</div>

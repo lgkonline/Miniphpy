@@ -122,3 +122,36 @@
 		</div>
 	</div>
 </div>
+
+<!-- Adding an external config file -->
+<div id="add-ext-config-modal" class="modal fade" tabindex="-1" role="dialog">
+    <form id="add-ext-config-form">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header panel-heading">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Adding an external config file</h4>
+                </div>
+                
+                <div class="modal-body">
+                    Please enter the path to an external and valid config file. It has to be a JSON file.
+                    
+                    <input id="add-ext-config-path" type="text" class="form-control">
+                    
+                    <div class="checkbox">
+                        <label>
+                            <input id="add-ext-config-existing" type="checkbox">
+                            Existing project config
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary-reverse">
+                        Continue
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

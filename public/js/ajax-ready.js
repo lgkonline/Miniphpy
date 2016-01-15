@@ -1,10 +1,6 @@
 function ajaxReady() {
-	var addProjectDom = $("#tpl-project-tab").clone();
-	$(addProjectDom).find(".project-tab-link").addClass("add-project");
-	$(addProjectDom).find(".project-tab-link").attr("data-toggle", "");
-	$(addProjectDom).find(".project-tab-link").html("<span class='glyphicon glyphicon-plus-sign'></span>");
-
-	$("#project-tabs").append($(addProjectDom).html());
+    // Check if config version is okay. Else it will get updated
+    configCompatibilityTool(config);
 
 	// Read active tab from cookie and mark it
 	var activeProject = getCookie("activeProject");
@@ -204,27 +200,57 @@ function ajaxReady() {
 			title: "",
 			autoRefresh: false,
 			compressionOption: "remote",
-			rootPath: "./"
+			rootPath: config.projects[projectID].rootPath
 		};
 
 		saveChanges();
 	});
 
 	// Add project
-	$(".add-project").click(function() {
+    function addProject(returnVal, external, projectObj) {
+        if (!isSet(external)) {
+            external = false;
+        }
+        
+        if (!isSet(projectObj)) {
+            projectObj = {
+                title: "New project",
+                rootPath: "./",
+                bundles: {},
+                external: external
+            };
+        }
+        
 		var projectID = makeProjectID();
 
-		config.projects[projectID] = {
-			title: "New project",
-			bundles: {}
-		};
+		config.projects[projectID] = projectObj;
+        
 		setCookie("activeProject", projectID, 365);
+        
+        if (isSet(returnVal)) {
+            console.log("bla");
+            
+            if (returnVal == "projectID") {
+                return projectID;
+            }
+            if (returnVal == "project") {
+                return config.projects[projectID];
+            }
+        }
+    }
+    
+	$(".add-project").click(function() {
+        addProject();
 		saveChanges();
 	});
 
 	// Remove project
 	$("#delete-project-go").click(function() {
 		var projectID = $(this).attr("data-project-id");
+        
+        if (isSet(config.projects[projectID].external) && config.projects[projectID].external) {
+            delete config.externalProjects[config.projects[projectID].externalProjectID];
+        }
 
 		delete config.projects[projectID];
 		saveChanges();
@@ -254,10 +280,61 @@ function ajaxReady() {
 			saveChanges();
 		}
 	});
+    
+    // Change project root path
+	$(".project-root-path").on("keypress focusout", function(e) {
+		if (e.type == "focusout" || e.type == "keypress" && e.which == 13) {
+			var projectID = $(this).closest(".project-id").attr("data-id");
+
+			config.projects[projectID].rootPath = $(this).val();
+			saveChanges();
+		}
+	});
 
 	// On dblclick project tab toggle rename
 	$("#project-tabs > li").dblclick(function() {
 		var projectID = $(this).find(".project-tab-link").attr("data-project-id");
 		$("#project-" + projectID).find(".edit-project-title-btn").click();
 	});
+    
+    // Adding an external config file
+    $("#add-ext-config-form").submit(function(e) {
+        var projectID;
+        var existingProject = $("#add-ext-config-existing").is(":checked");
+        
+        e.preventDefault();
+        var configPath = $("#add-ext-config-path").val();
+        
+        if (existingProject) {
+            $.ajax({
+                url: "index.php?action=ext-config",
+                data: {configPath: configPath },
+                type: "GET",
+                dataType: "json",
+                success: function(receivedProject) {
+                    console.log(receivedProject);
+                    projectID = addProject("projectID", true, receivedProject);
+                    
+                    addExtProject(configPath, projectID);
+                }
+            });
+        }
+        else {
+            projectID = addProject("projectID", true)
+            addExtProject(configPath, projectID);
+        }
+    });
+    
+    $("#add-ext-config-modal").on("shown.bs.modal", function() {
+        $("#add-ext-config-path").select();
+    });
+}
+
+function addExtProject(configPath, projectID) {
+    config.externalProjects[makeExtProjectID()] = {
+        configPath: configPath,
+        projectID: projectID,
+    };
+    
+    saveChanges(true, config);
 }

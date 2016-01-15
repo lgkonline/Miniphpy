@@ -1,12 +1,15 @@
-function saveChanges(restart) {
+function saveChanges(restart, receivedConfig) {
 	if (typeof restart == "undefined" || restart == null) {
 		restart = false;
 	}
+	if (typeof receivedConfig == "undefined" || receivedConfig == null) {
+		receivedConfig = config;
+	}    
 	
 	$.ajax({
 		url: "index.php?action=update-config",
 		type: "POST",
-		data: { "config": JSON.stringify(config) },
+		data: { "config": JSON.stringify(receivedConfig) },
 		dataType: "json",
 		success: function(response) {
 			if (restart) {
@@ -17,6 +20,10 @@ function saveChanges(restart) {
 			}
 		}
 	});
+}
+
+function isSet(variable) {
+    return typeof variable != "undefined" && variable != null;
 }
 
 function isBaseIDValid(newID) {
@@ -66,6 +73,21 @@ function makeProjectID() {
 			}
 			
 	return newProjectID;
+}
+
+function makeExtProjectID() {
+	// Get base ID
+	var newExtProjectID = Object.keys(config.externalProjects)[0];
+	if (isBaseIDValid(newExtProjectID)) {
+		newExtProjectID = 1;
+	}
+	
+	while (typeof config.externalProjects[newExtProjectID] != "undefined" || 
+			config.externalProjects[newExtProjectID] != null) {
+				newExtProjectID++;
+			}
+			
+	return newExtProjectID;
 }
 
 function startLoading() {
